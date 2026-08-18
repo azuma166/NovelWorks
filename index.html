@@ -15,7 +15,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="吾妻大夢 Works">
 <meta property="og:title" content="吾妻大夢 Works｜小説・詩・エッセイ">
-<meta property="og:description" content="吾妻大夢（Hiromu Azuma）の作品一覧。マジックリアリズム幻想小説、思索小説、詩集、エッセイをAmazon KDPにて発表。最新作は『ゆいめ』。Kindle・ペーパーバックで発売中。">
+<meta property="og:description" content="世界には不思議さがある。確からしさもある。その境目は、どこだろう？——吾妻大夢はマジックリアリズム、SF、幻想を横断するひとりの小説家です。">
 <meta property="og:url" content="https://azuma166.github.io/NovelWorks/">
 <meta property="og:image" content="https://azuma166.github.io/NovelWorks/ogp.png">
 <meta property="og:image:width" content="1200">
@@ -25,7 +25,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="吾妻大夢 Works｜小説・詩・エッセイ">
-<meta name="twitter:description" content="マジックリアリズム幻想小説、思索小説、詩、エッセイ。Amazon KDPにて発売中。">
+<meta name="twitter:description" content="世界には不思議さがある。確からしさもある。その境目は、どこだろう？——吾妻大夢はマジックリアリズム、SF、幻想を横断するひとりの小説家です。">
 <meta name="twitter:image" content="https://azuma166.github.io/NovelWorks/ogp.png">
 
 <script type="application/ld+json">
@@ -59,6 +59,8 @@
 <style>
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
 
+html { -webkit-text-size-adjust:100%; }
+
 body {
   font-family:'Noto Serif JP',serif;
   color:#1a1a2e;
@@ -88,21 +90,27 @@ body {
 .wh-title { font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:300; letter-spacing:0.12em; margin:0 0 0.4rem; color:#1a1a2e; }
 .wh-sub { font-size:11px; letter-spacing:0.2em; color:#7080a0; font-weight:300; }
 
+.wh-lead { margin:2.8rem auto 0; }
+.wh-lead-p { max-width:24em; margin:0 auto; font-size:14px; line-height:2.7; color:#1a1a2e; font-weight:300; letter-spacing:0.07em; white-space:pre-line; }
+.wh-rule { width:24px; height:0.5px; background:rgba(60,80,140,0.3); margin:2rem auto; }
+.wh-bio { max-width:38em; margin:0 auto; font-size:12px; line-height:2.2; color:#3a4060; font-weight:300; letter-spacing:0.04em; }
+.nb { white-space:nowrap; }
+
 .section { margin-bottom:3rem; }
-.section-label { font-size:10px; letter-spacing:0.22em; color:#7080a0; padding-bottom:0.6rem; border-bottom:0.5px solid rgba(60,80,140,0.15); margin-bottom:1.5rem; }
+.section-label { font-size:13px; letter-spacing:0.18em; color:#5a6a92; padding-bottom:0.6rem; border-bottom:0.5px solid rgba(60,80,140,0.15); margin-bottom:1.5rem; }
 
 .set-wrap { border:0.5px solid rgba(60,80,140,0.2); margin-bottom:2rem; background:rgba(247,248,251,0.88); }
 .set-header { padding:0.9rem 1.4rem; background:rgba(230,234,245,0.6); border-bottom:0.5px solid rgba(60,80,140,0.15); }
 .set-header-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; }
-.set-label { font-size:10px; letter-spacing:0.18em; color:#7080a0; margin-bottom:0.5rem; }
+.set-label { font-size:12px; letter-spacing:0.16em; color:#5a6a92; margin-bottom:0.5rem; }
 .set-abstract { font-size:12px; line-height:1.9; color:#3a4060; font-weight:300; flex:1; }
 .set-pb-block { flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
-.set-pb-label { font-size:9px; letter-spacing:0.16em; color:#7080a0; text-align:right; }
+.set-pb-label { font-size:11px; letter-spacing:0.14em; color:#5a6a92; text-align:right; }
 .pb-btn { display:inline-block; font-size:11px; letter-spacing:0.1em; color:#f7f8fb; text-decoration:none; border:0.5px solid #1a1a2e; padding:7px 16px; border-radius:2px; background:#1a1a2e; transition:all 0.2s; font-family:'Noto Serif JP',serif; white-space:nowrap; }
 .pb-btn:hover { background:#f7f8fb; color:#1a1a2e; }
 
 .set-grid { display:grid; grid-template-columns:1fr 1fr; }
-@media(max-width:560px){ .set-grid { grid-template-columns:1fr; } .set-card:first-child { border-right:none; border-bottom:0.5px solid rgba(60,80,140,0.15); } }
+@media(max-width:640px){ .set-grid { grid-template-columns:1fr; } .set-card:first-child { border-right:none; border-bottom:0.5px solid rgba(60,80,140,0.15); } }
 .set-card { padding:1.4rem; display:flex; flex-direction:column; gap:0.65rem; transition:background 0.2s; }
 .set-card:first-child { border-right:0.5px solid rgba(60,80,140,0.15); }
 .set-card:hover { background:rgba(220,225,240,0.3); }
@@ -120,7 +128,7 @@ body {
 .card-inner { display:flex; gap:0.9rem; }
 .card-body { display:flex; flex-direction:column; gap:0.5rem; flex:1; }
 
-.c-tag { font-size:10px; letter-spacing:0.16em; color:#7080a0; font-weight:300; }
+.c-tag { font-size:11.5px; letter-spacing:0.14em; color:#5a6a92; font-weight:300; }
 .c-title { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:400; letter-spacing:0.04em; line-height:1.3; color:#1a1a2e; }
 .c-div { width:18px; height:0.5px; background:rgba(60,80,140,0.3); }
 .c-desc { font-size:12px; line-height:2; color:#3a4060; font-weight:300; white-space:pre-line; flex:1; }
@@ -134,8 +142,8 @@ body {
 
 .new-wrap { border:0.5px solid rgba(60,80,140,0.42); box-shadow:0 1px 14px rgba(60,80,140,0.08); }
 .new-head { display:flex; align-items:center; gap:0.9rem; padding:0.75rem 1.4rem; background:rgba(230,234,245,0.6); border-bottom:0.5px solid rgba(60,80,140,0.15); }
-.new-badge { display:inline-block; font-family:'Cormorant Garamond',serif; font-size:10px; letter-spacing:0.26em; color:#f7f8fb; background:#1a1a2e; padding:3px 9px 3px 11px; border-radius:2px; }
-.new-date { font-size:10px; letter-spacing:0.16em; color:#7080a0; }
+.new-badge { display:inline-block; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:0.24em; color:#f7f8fb; background:#1a1a2e; padding:3px 9px 3px 11px; border-radius:2px; }
+.new-date { font-size:12px; letter-spacing:0.14em; color:#5a6a92; }
 
 .wf { text-align:center; margin-top:3rem; font-size:10px; letter-spacing:0.14em; color:#7080a0; }
 
@@ -145,6 +153,47 @@ body {
 .drift { animation:slowdrift 14s ease-in-out infinite; }
 .drift2 { animation:slowdrift2 18s ease-in-out infinite; }
 .glint { animation:pulse 4s ease-in-out infinite; }
+
+/* ---- スマートフォン最適化 ---- */
+@media (max-width:640px) {
+  .container { padding:2.2rem 1.15rem 3.5rem; }
+
+  .wh { margin-bottom:2.6rem; padding-bottom:1.7rem; }
+  .wh-title { font-size:2.1rem; letter-spacing:0.08em; }
+  .wh-sub { font-size:10.5px; letter-spacing:0.15em; }
+  .wh-lead { margin-top:2.1rem; }
+  .wh-lead-p { font-size:15px; line-height:2.35; letter-spacing:0.04em; }
+  .wh-rule { margin:1.7rem auto; }
+  .wh-bio { font-size:13px; line-height:2.05; }
+
+  .section { margin-bottom:2.5rem; }
+  .section-label { font-size:12px; letter-spacing:0.15em; margin-bottom:1.2rem; }
+  .set-wrap, .solo-wrap { margin-bottom:1.4rem; }
+
+  /* セット見出し: 概要とペーパーバックボタンを縦に */
+  .set-header { padding:1rem 1.15rem; }
+  .set-header-top { flex-direction:column; align-items:stretch; gap:1rem; }
+  .set-pb-block { align-items:flex-start; }
+  .set-pb-label { text-align:left; }
+  .set-abstract { font-size:13px; line-height:1.95; }
+
+  /* 単独作品: 表紙を上に置き、本文を全幅で読ませる */
+  .solo-card { flex-direction:column; gap:1.1rem; padding:1.2rem; }
+  .cover-wrap img { width:96px; }
+  .set-card { padding:1.2rem; }
+  .cover-sm img { width:58px; }
+  .new-head { padding:0.85rem 1.15rem; }
+
+  .c-title { font-size:1.5rem; }
+  .c-desc { font-size:13.5px; line-height:2.05; }
+  .toc { font-size:12px; line-height:2.1; }
+
+  /* タップしやすいボタン（高さ44px以上） */
+  .c-links { gap:8px; margin-top:0.6rem; }
+  .c-link, .pb-btn { font-size:13px; padding:12px 22px; letter-spacing:0.08em; }
+
+  .wf { font-size:10.5px; line-height:1.9; margin-top:2.2rem; }
+}
 </style>
 </head>
 <body>
@@ -257,6 +306,13 @@ body {
   <div class="wh">
     <h1 class="wh-title">吾妻大夢 Works</h1>
     <p class="wh-sub">Hiromu Azuma — Fiction & Poetry</p>
+    <div class="wh-lead">
+      <p class="wh-lead-p">世界には不思議さがある。
+確からしさもある。
+その境目は、どこだろう？</p>
+      <div class="wh-rule"></div>
+      <p class="wh-bio">吾妻大夢は<span class="nb">マジックリアリズム、SF、幻想</span>を<span class="nb">横断するひとりの小説家です。</span></p>
+    </div>
   </div>
 
   <div class="section">
