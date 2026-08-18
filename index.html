@@ -127,7 +127,9 @@ body {
 .wh { position:relative; text-align:center; margin-bottom:3.5rem; padding-bottom:2rem; border-bottom:0.5px solid rgba(60,80,140,0.2); }
 .wh::before { content:''; position:absolute; z-index:-1; top:-14%; left:-16%; right:-16%; bottom:-6%; pointer-events:none;
   background:radial-gradient(ellipse at 50% 44%, rgba(247,248,251,0.9) 0%, rgba(247,248,251,0.74) 42%, rgba(247,248,251,0.34) 66%, rgba(247,248,251,0) 82%); }
-.wh-title { font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:300; letter-spacing:0.12em; margin:0 0 0.4rem; color:#1a1a2e; }
+.wh-title { margin:0 0 0.55rem; font-weight:300; color:#1a1a2e; }
+.wh-jp { display:block; font-family:'Noto Serif JP',serif; font-size:2.45rem; font-weight:300; letter-spacing:0.17em; text-indent:0.17em; line-height:1.22; }
+.wh-en { display:block; font-family:'Cormorant Garamond',serif; font-size:2.05rem; font-weight:300; letter-spacing:0.3em; text-indent:0.3em; line-height:1.3; margin-top:0.12em; }
 .wh-sub { font-size:11px; letter-spacing:0.2em; color:#7080a0; font-weight:300; }
 
 .wh-lead { margin:2.8rem auto 0; }
@@ -209,7 +211,8 @@ body {
   .container { padding:2.2rem 1.15rem 3.5rem; }
 
   .wh { margin-bottom:2.6rem; padding-bottom:1.7rem; }
-  .wh-title { font-size:2.1rem; letter-spacing:0.08em; }
+  .wh-jp { font-size:2.05rem; letter-spacing:0.14em; text-indent:0.14em; }
+  .wh-en { font-size:1.72rem; letter-spacing:0.26em; text-indent:0.26em; }
   .wh-sub { font-size:10.5px; letter-spacing:0.15em; }
   .wh-lead { margin-top:2.1rem; }
   .wh-lead-p { font-size:15px; line-height:2.35; letter-spacing:0.04em; }
@@ -285,7 +288,7 @@ body {
 
 <div class="container">
   <div class="wh">
-    <h1 class="wh-title">吾妻大夢 Works</h1>
+    <h1 class="wh-title"><span class="wh-jp">吾妻大夢</span><span class="wh-en">Works</span></h1>
     <p class="wh-sub">Hiromu Azuma — Fiction & Poetry</p>
     <div class="wh-lead">
       <p class="wh-lead-p">世界には不思議さがある。
