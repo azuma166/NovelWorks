@@ -126,6 +126,9 @@ def page(depth, path, title, desc, body, here, jsonld=None, ogtitle=None, back=N
 </body>
 </html>
 """
+    title   = C.SITE_TITLE          # 全ページ共通。余計な説明は付けない
+    ogtitle = C.SITE_TITLE
+    desc    = C.SITE_DESC
     if back is None and depth > 0:
         back = "../"          # どのページも「ひとつ上」へ戻る
     backhtml = ('  <div class="back-wrap"><a class="backlink" href="%s" aria-label="ひとつ上へ戻る" title="戻る">←</a></div>'

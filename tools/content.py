@@ -2,6 +2,8 @@
 """吾妻大夢 Station — 本文データ。ここを直して build_site.py を実行すればサイトが再生成される。"""
 
 SITE_ROOT = "https://azuma166.github.io/NovelWorks/"
+SITE_TITLE = "吾妻大夢 Station"
+SITE_DESC  = "誰かが誰かに引き渡した時、それは効力を持つ"
 EMAIL     = "azumaazuma06@gmail.com"
 X_URL     = "https://x.com/log_azum"
 NOTE_URL  = "https://note.com/log_azum"
