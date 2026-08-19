@@ -84,8 +84,8 @@ def page(depth, path, title, desc, body, here, jsonld=None, ogtitle=None, back=N
 <script>document.documentElement.className+=" js";</script>
 <div class="progress"></div>
 
-<img class="bg-base" src="@@U@@assets/bg.webp" alt="" aria-hidden="true" decoding="async">
-@@BG@@
+<div class="bg-layer bg-base"><img src="@@U@@assets/bg.webp" alt="" aria-hidden="true" decoding="async"></div>
+<div class="bg-layer bg-c">@@BG@@</div>
 
 <div class="container">
 @@BODY@@
