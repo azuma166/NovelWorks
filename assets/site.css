@@ -13,8 +13,8 @@ body {
 
 .bg-base {
   position:fixed;
-  top:-11%; left:0; right:0;
-  width:auto; height:122%;
+  top:-11%; left:0;
+  width:100%; height:122%;
   object-fit:cover;
   pointer-events:none;
   z-index:0;
@@ -23,8 +23,8 @@ body {
 }
 .bg-canvas {
   position:fixed;
-  top:-11%; left:0; right:0;
-  width:auto; height:122%;
+  top:-11%; left:0;
+  width:100%; height:122%;
   pointer-events:none;
   z-index:0;
   will-change:transform;
@@ -493,4 +493,18 @@ body {
   .verse-line { font-size:14px; line-height:2.15; }
   .verse-title { font-size:15.5px; }
   .case-part { margin:2.8rem 0 2rem; }
+}
+
+/* ================= Books の図版も斜めに重ねる ================= */
+.wcard-visual.jumble { display:flex; align-items:center; justify-content:center; gap:0;
+  flex-wrap:nowrap; min-height:98px; }
+.wcard-visual.jumble > * { flex-shrink:0; margin-left:-13px; transform:rotate(var(--r,0deg));
+  transition:transform 0.3s; filter:drop-shadow(0 1px 5px rgba(60,80,140,0.16)); }
+.wcard-visual.jumble > *:first-child { margin-left:0; }
+.wcard:hover .wcard-visual.jumble > * { transform:rotate(calc(var(--r,0deg) * 1.9)); }
+.wcard-visual.jumble img { display:block; width:52px; border:0.5px solid rgba(60,80,140,0.24); }
+@media (max-width:640px) {
+  .wcard-visual.jumble { min-height:82px; }
+  .wcard-visual.jumble > * { margin-left:-15px; }
+  .wcard-visual.jumble img { width:44px; }
 }

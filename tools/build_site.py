@@ -240,7 +240,7 @@ def paras(text, cls="prose"):
         if not s: continue
         if s == "◯":
             out.append('    <div class="poem-mark">◯</div>'); continue
-        ind = ' class="indent"' if line.startswith("　") else ""
+        ind = ' class="indent"' if (cls == "prose" or line.startswith("　")) else ""
         out.append('    <p%s>%s</p>' % (ind, esc(s)))
     return ('  <div class="readpanel reveal">\n    <div class="%s">\n%s\n    </div>\n  </div>'
             % (cls, "\n".join("  "+o for o in out)))
@@ -333,10 +333,10 @@ def wcard(href, en, phrase, visual, items, external=False, major=False, lead=Non
     return ('      <a class="wcard%s" href="%s"%s>\n'
             '        <div class="wcard-top"><span class="wcard-en">%s</span><span class="hub-arrow">%s</span></div>\n'
             '        <div class="wcard-phrase">%s</div>\n'
-            '        <div class="wcard-visual">%s</div>%s\n'
+            '        <div class="wcard-visual%s">%s</div>%s\n'
             '        <div class="wcard-items">%s</div>\n      </a>'
             % (" wcard-major" if major else "", href, tgt, esc(en), "↗" if external else "→",
-               esc(phrase), visual, ld, items))
+               esc(phrase), " jumble" if major else "", visual, ld, items))
 
 def cv(asin, depth=1):  return '<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % asin)
 def sh(name, depth=1):  return '<img class="sh" src="%sassets/%s" alt="" loading="lazy">' % (up(depth), name)
@@ -415,7 +415,11 @@ def build():
     # ============================================================ Works（5つを同階層に）
     cards = [
       wcard("books/", "Books", P["books"],
-            "".join(cv(a) for a in ["B0HFNHM1B7","B0B12RN7ZN","B0BWT14YM1","B0C576Q4CT","B0FPCZ39NC","B0GFWDKKJY","B0F9VCQNRV"]),
+            '<span class="jumble-mark"></span>' + "".join(
+              '<span style="--r:%s"><img src="%s" alt="" loading="lazy"></span>' % (r, COVER % a)
+              for a, r in [("B0HFNHM1B7","-7deg"),("B0B12RN7ZN","5deg"),("B0B7Z1D5YD","-3deg"),
+                           ("B0BWT14YM1","4deg"),("B0C576Q4CT","-5deg"),("B0FPCZ39NC","6deg"),
+                           ("B0GFWDKKJY","-4deg"),("B0F9VCQNRV","3deg")]),
             "小説・詩集・エッセイ 13冊 — ゆいめ／みぎうで／灯花／絵喰い／Debris／錆びた平方／shuffle／shape／パラレルの耐用／Meltopia／浸水地帯／Key",
             major=True, lead=C.BOOKS_LEAD),
       wcard("poem/", "Poem", P["poem"], '<span class="wplate">%s</span>' % ICONS["poem"], "空力の考察 — 詩的掌編。全文を掲載。"),
