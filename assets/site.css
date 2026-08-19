@@ -8,7 +8,6 @@ body {
   background:#f7f8fb;
   min-height:100vh;
   position:relative;
-  overflow-x:hidden;
 }
 
 /* 固定の背景層。枠は通常の div（left/right で幅が決まる）、
