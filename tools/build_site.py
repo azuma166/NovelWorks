@@ -10,16 +10,10 @@ def esc(t): return html.escape(t, quote=True)
 
 # 全ページ共通の索引（母港からすべての桟橋が見える）
 NAV = [
-  ("",          "Station",  "母港"),
-  ("now/",      "Now",      "いま"),
-  ("column/",   "Column",   "コラム"),
-  ("works/books/",   "Books",   "小説"),
-  ("works/poem/",    "Poem",    "詩"),
-  ("works/tanka/",   "Tanka",   "短歌"),
-  ("works/theater/", "Theater", "演劇"),
-  ("works/app/",     "App",     "アプリ"),
-  ("for-you/",  "For You",  "あなたへ"),
-  ("contact/",  "Contact",  "連絡"),
+  ("",         "Station", "母港"),
+  ("column/",  "Column",  "コラム"),
+  ("works/",   "Works",   "作品"),
+  ("contact/", "Contact", "連絡"),
 ]
 
 def up(depth): return "../" * depth
@@ -223,189 +217,223 @@ AUTHOR_ID = C.SITE_ROOT + "#author"
 PERSON = {"@type":"Person","@id":AUTHOR_ID,"name":"吾妻大夢","alternateName":"Hiromu Azuma",
           "jobTitle":"小説家","description":C.PROFILE,"url":C.SITE_ROOT,
           "sameAs":[C.X_URL, C.NOTE_URL]}
+P = C.PHRASE
+
+
+# ================================================================= アイコン
+ICONS = {
+ # 天使: 光輪とひらいた翼
+ "tenshi": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
+   '<ellipse cx="24" cy="11" rx="8.5" ry="3.4" class="g"/>'
+   '<path d="M6 41 C12 25 19 20 24 20 C29 20 36 25 42 41"/>'
+   '<path d="M13 41 C17 30 20.5 26 24 26 C27.5 26 31 30 35 41" class="d"/>'
+   '<circle cx="24" cy="20" r="1.6" class="f"/></svg>',
+ # 触診: 面に触れる円と、そこから広がる波
+ "shokushin": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
+   '<circle cx="24" cy="20" r="11"/>'
+   '<line x1="4" y1="31" x2="44" y2="31"/>'
+   '<circle cx="24" cy="31" r="2" class="f"/>'
+   '<path d="M13 36 Q24 41 35 36" class="d"/>'
+   '<path d="M8 41 Q24 48 40 41" class="d"/></svg>',
+ # 接続: 結ばれた節点
+ "setsuzoku": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
+   '<line x1="10" y1="13" x2="24" y2="25"/><line x1="24" y1="25" x2="39" y2="11"/>'
+   '<line x1="24" y1="25" x2="11" y2="38"/><line x1="24" y1="25" x2="38" y2="37"/>'
+   '<line x1="10" y1="13" x2="39" y2="11" class="d"/>'
+   '<circle cx="24" cy="25" r="3" class="f"/>'
+   '<circle cx="10" cy="13" r="2.3"/><circle cx="39" cy="11" r="2.3"/>'
+   '<circle cx="11" cy="38" r="2.3"/><circle cx="38" cy="37" r="2.3"/></svg>',
+ # 詩: 重なる波
+ "poem": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
+   '<path d="M4 17 Q12 8 20 17 T36 17 T52 17"/>'
+   '<path d="M4 25 Q12 16 20 25 T36 25 T52 25" class="g"/>'
+   '<path d="M4 33 Q12 24 20 33 T36 33 T52 33" class="d"/></svg>',
+ # 短歌: 五七五七七の律
+ "tanka": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
+   '<line x1="14" y1="10" x2="34" y2="10"/>'
+   '<line x1="10" y1="19" x2="38" y2="19" class="g"/>'
+   '<line x1="14" y1="28" x2="34" y2="28"/>'
+   '<line x1="10" y1="37" x2="38" y2="37" class="g"/>'
+   '<line x1="10" y1="44" x2="38" y2="44"/></svg>',
+}
+
+GATE_COVERS = ["B0HFNHM1B7","B0B12RN7ZN","B0C576Q4CT","B0GFWDKKJY","B0F9VCQNRV"]
+
+def label(en, phrase, anchor=None):
+    a = ' id="%s"' % anchor if anchor else ""
+    sub = '<span class="sl-sub">%s</span>' % esc(phrase) if phrase else ""
+    return ('    <div class="section-label reveal"%s><span class="sl-en">%s</span>%s</div>'
+            % (a, esc(en), sub))
+
+def sect(en, phrase, inner, anchor=None):
+    return '  <div class="section">\n%s\n%s\n  </div>' % (label(en, phrase, anchor), inner)
+
+def col_row(href, title, sub, icon=None):
+    ic = ICONS.get(icon, "")
+    return ('      <a class="col-row" href="%s">%s<span class="col-title">%s</span>'
+            '<span class="col-sub">%s</span><span class="col-arrow">→</span></a>'
+            % (href, ic, esc(title), esc(sub)))
+
+def mini(href, title, desc, external=False, icon=None, thumb=None, depth=1):
+    tgt = ' target="_blank" rel="noopener"' if external else ""
+    if thumb:
+        vis = '<img class="mini-thumb" src="%sassets/%s" alt="%s" loading="lazy">' % (up(depth), thumb, esc(title))
+    elif icon:
+        vis = '<span class="mini-plate">%s</span>' % ICONS[icon]
+    else:
+        vis = ""
+    return ('      <a class="mini" href="%s"%s>%s<span class="mini-title">%s</span>'
+            '<span class="mini-desc">%s</span><span class="mini-arrow">%s</span></a>'
+            % (href, tgt, vis, esc(title), esc(desc), "↗" if external else "→"))
+
+def subsec(en, phrase, inner, anchor=None):
+    ph_ = '<span class="sub-phrase">%s</span>' % esc(phrase) if phrase else ""
+    a = ' id="%s"' % anchor if anchor else ""
+    return ('    <div class="subsection"%s>\n      <div class="sub-label">%s%s</div>\n%s\n    </div>'
+            % (a, esc(en), ph_, inner))
 
 def build():
     made = []
 
-    # ---------------------------------------------------------- Station
-    body = []
-    body.append('  <div class="wh">\n'
-      '    <h1 class="wh-title"><span class="wh-jp">吾妻大夢</span><span class="wh-en">Station</span></h1>\n'
-      '    <p class="wh-sub">Hiromu Azuma — Home Port</p>\n'
-      '    <div class="wh-lead">\n      <p class="wh-lead-p">%s</p>\n'
-      '      <div class="wh-rule"></div>\n      <p class="wh-bio">%s</p>\n    </div>\n  </div>'
-      % (esc(C.LEAD), esc(C.BIO)))
+    # ============================================================ Station
+    b = ['  <div class="wh">\n'
+         '    <h1 class="wh-title"><span class="wh-jp">吾妻大夢</span><span class="wh-en">Station</span></h1>\n'
+         '    <p class="wh-sub">Hiromu Azuma — Home Port</p>\n'
+         '    <div class="wh-lead">\n      <p class="wh-lead-p">%s</p>\n'
+         '      <div class="wh-rule"></div>\n      <p class="wh-bio">%s</p>\n    </div>\n  </div>'
+         % (esc(C.LEAD), esc(C.BIO))]
 
-    body.append(section("Now — いま", '  <div class="hub-grid">\n' + hub(
-        "now/", "ゆいめ", "2026.08.18 最新作 / Novel · SF",
-        "感情を直通させる管、CABLE。ことばに触れる、SF抒情。", "Kindle・ペーパーバックで発売中", wide=True) + '\n  </div>'))
+    # Now — 最新作をそのまま置く（Books と同じ書式）
+    b.append(sect("Now", P["now"], solo_card(C.YUIME, badge=C.YUIME["date"]), anchor="now"))
 
-    cols = "\n".join(hub("column/%s/" % s, jp, en, lede) for s, jp, en, lede, _ in C.COLUMN)
-    body.append(section("Column — コラム", '  <div class="hub-grid">\n%s\n  </div>' % cols))
+    # Column — 最小単位の行
+    rows = "\n".join(col_row("column/%s/" % slug, jp, lede, icon=slug) for slug, jp, en, lede, _ in C.COLUMN)
+    b.append(sect("Column", P["column"],
+        '    <div class="col-list reveal">\n%s\n    </div>' % rows, anchor="column"))
 
-    body.append(section("Links", '  <div class="linkrow">\n'
-        '    <a class="ext" href="%s" target="_blank" rel="noopener">X</a>\n'
-        '    <a class="ext" href="%s" target="_blank" rel="noopener">note</a>\n  </div>' % (C.X_URL, C.NOTE_URL)))
+    # Links
+    b.append(sect("Links", P["links"],
+        '    <div class="linkrow reveal">\n'
+        '      <a class="ext" href="%s" target="_blank" rel="noopener">X</a>\n'
+        '      <a class="ext" href="%s" target="_blank" rel="noopener">note</a>\n'
+        '      <a class="ext" href="%s" target="_blank" rel="noopener">YouTube</a>\n    </div>'
+        % (C.X_URL, C.NOTE_URL, C.YT_URL), anchor="links"))
 
-    works = "\n".join([
-      hub("works/books/",   "Books",   "小説",   "13の小説・詩集・エッセイ。マジックリアリズム幻想小説を中心に。", "みぎうで／灯花／絵喰い／Debris／錆びた平方／shuffle／shape／パラレルの耐用／Meltopia／ゆいめ／浸水地帯／Key"),
-      hub("works/poem/",    "Poem",    "詩",     "感慨を織り重ねて描写する詩的掌編。", C.POEM_TITLE),
-      hub("works/tanka/",   "Tanka",   "短歌",   "語と語の間に距離を置いた、二十五首の連作。", C.TANKA_TITLE),
-      hub("works/theater/", "Theater", "演劇",   "%s %s。" % (C.THEATER["company"], C.THEATER["note"]), C.THEATER["title"]),
-      hub("works/app/",     "App",     "アプリ", C.APP["lede"], "%s（%s）" % (C.APP["title"], C.APP["sub"])),
-    ])
-    body.append(section("Works — 作品", '  <div class="hub-grid">\n%s\n  </div>' % works))
+    # Works — 入口ひとつ
+    covers = "".join('<img src="%s" alt="" loading="lazy">' % (COVER % a) for a in GATE_COVERS)
+    b.append(sect("Works", P["works"],
+        '    <a class="gate reveal" href="works/">\n'
+        '      <div class="gate-top"><span class="gate-en">Works</span><span class="hub-arrow">→</span></div>\n'
+        '      <div class="gate-covers">' + covers + '</div>\n'
+        '      <div class="gate-items">Books — 小説・詩集・エッセイ 13冊<br>'
+        'Poem／Tanka／Theater／App</div>\n    </a>', anchor="works"))
 
-    body.append(section("For You — あなたへ",
-      '  <div class="readpanel reveal">\n    <p class="pull">%s</p>\n'
-      '    <div class="linkrow" style="justify-content:center;margin-top:2rem">'
-      '<a class="ext" href="for-you/">For You →</a></div>\n  </div>' % esc(C.FOR_YOU)))
+    # For You — メッセージをそのまま
+    b.append(sect("For You", P["for_you"],
+        '    <div class="readpanel reveal">\n      <p class="pull">%s</p>\n    </div>' % esc(C.FOR_YOU),
+        anchor="for-you"))
 
-    body.append(section("Contact — 連絡",
-      '  <div class="linkrow reveal"><a class="ext" href="mailto:%s">%s</a></div>' % (C.EMAIL, C.EMAIL)))
+    b.append(sect("Contact", "",
+        '    <div class="linkrow reveal"><a class="ext" href="mailto:%s">%s</a></div>' % (C.EMAIL, C.EMAIL),
+        anchor="contact"))
 
     made.append(("index.html", page(0, "", "吾妻大夢 Station｜小説・詩・短歌・演劇・アプリ",
-      "吾妻大夢（Hiromu Azuma）の母港。世界には不思議さがある。確からしさもある。その境目は、どこだろう？ 小説、詩、短歌、コラム、演劇、アプリケーション。",
-      "\n".join(body), "", jsonld={"@context":"https://schema.org","@graph":[PERSON,
+      "吾妻大夢（Hiromu Azuma）の母港。世界には不思議さがある。確からしさもある。その境目は、どこだろう？ 小説を軸に、詩、短歌、コラム、演劇、アプリケーション。",
+      "\n".join(b), "", jsonld={"@context":"https://schema.org","@graph":[PERSON,
         {"@type":"WebSite","@id":C.SITE_ROOT+"#site","url":C.SITE_ROOT,"name":"吾妻大夢 Station",
-         "inLanguage":"ja","author":{"@id":AUTHOR_ID}},
-        {"@type":"ItemList","name":"Station","itemListElement":[
-          {"@type":"ListItem","position":i+1,"name":en,"item":C.SITE_ROOT+path}
-          for i,(path,en,jp) in enumerate(NAV) if path]}]})))
+         "inLanguage":"ja","author":{"@id":AUTHOR_ID}}]})))
 
-    # ---------------------------------------------------------- Now
-    b = [crumbs(1, [(None,"Now")]), ph("Now", "いま — 最新作"),
-         solo_card(C.YUIME, badge=C.YUIME["date"]),
-         '  <div class="meta-row reveal" style="justify-content:center;margin-top:1.4rem">'
-         '<span>%s</span><span>発売日 %s</span></div>' % (esc(C.YUIME["pages"]), esc(C.YUIME["date"]))]
-    made.append(("now/index.html", page(1, "now/", "ゆいめ｜吾妻大夢 Station",
-      "吾妻大夢の最新作『ゆいめ』。感情を直通させる管、CABLE。ことばに触れる、SF抒情。Kindle・ペーパーバックで発売中。",
-      "\n".join(b), "now/", ogtitle="ゆいめ — 吾妻大夢 最新作")))
-
-    # ---------------------------------------------------------- Column
-    cards = "\n".join(hub("%s/" % s, jp, "%s — %s" % (en, jp), lede) for s, jp, en, lede, _ in C.COLUMN)
+    # ============================================================ Column
+    rows = "\n".join(col_row("%s/" % slug, jp, lede, icon=slug) for slug, jp, en, lede, _ in C.COLUMN)
     b = [crumbs(1, [(None,"Column")]),
-         ph("Column", "コラム", "考えていることを、そのまま置いています。"),
-         '  <div class="hub-grid reveal">\n%s\n  </div>' % cards]
+         ph("Column", "コラム", P["column"]),
+         '  <div class="col-list reveal">\n%s\n  </div>' % rows]
     made.append(("column/index.html", page(1, "column/", "Column｜吾妻大夢 Station",
-      "吾妻大夢のコラム。天使、触診、接続——考えていることを、そのまま置いています。",
-      "\n".join(b), "column/")))
+      "吾妻大夢のコラム。天使、触診、接続。", "\n".join(b), "column/")))
 
     for slug, jp, en, lede, text in C.COLUMN:
+        snippet = text.replace("\n", "").replace("　", "")[:95] + "…"
         b = [crumbs(2, [("../","Column"), (None, jp)]),
-             ph(en, jp, lede), paras(text, "prose"),
-             '  <div class="prose-end"></div>']
+             ph(jp, en, lede), paras(text, "prose")]
         made.append(("column/%s/index.html" % slug, page(2, "column/%s/" % slug,
-          "%s｜Column｜吾妻大夢 Station" % jp, lede, "\n".join(b), "column/",
-          ogtitle="%s — 吾妻大夢" % jp,
+          "%s｜Column｜吾妻大夢 Station" % jp, snippet, "\n".join(b), "column/",
+          ogtitle="%s — %s" % (jp, lede),
           jsonld={"@context":"https://schema.org","@type":"Article","headline":jp,
                   "alternativeHeadline":en,"description":lede,"inLanguage":"ja",
                   "author":PERSON,"mainEntityOfPage":C.SITE_ROOT+"column/%s/" % slug})))
 
-    # ---------------------------------------------------------- Works hub
-    works = "\n".join([
-      hub("books/",   "Books",   "小説",   "13の小説・詩集・エッセイ。"),
-      hub("poem/",    "Poem",    "詩",     C.POEM_TITLE),
-      hub("tanka/",   "Tanka",   "短歌",   C.TANKA_TITLE),
-      hub("theater/", "Theater", "演劇",   C.THEATER["title"]),
-      hub("app/",     "App",     "アプリ", "%s（%s）" % (C.APP["title"], C.APP["sub"])),
-    ])
-    b = [crumbs(1, [(None,"Works")]), ph("Works", "作品", "書いたもの、つくったもの。"),
-         '  <div class="hub-grid reveal">\n%s\n  </div>' % works]
-    made.append(("works/index.html", page(1, "works/", "Works｜吾妻大夢 Station",
-      "吾妻大夢の作品。小説、詩、短歌、演劇、アプリケーション。", "\n".join(b), "works/books/")))
+    # ============================================================ Works（主＝Books、従＝その他）
+    b = [crumbs(1, [(None,"Works")]), ph("Works", "作品", P["works"])]
 
-    # ---------------------------------------------------------- Books
-    b = [crumbs(2, [("../","Works"), (None,"Books")]),
-         ph("Books", "小説・詩集・エッセイ", "Amazon KDPにて発売中。")]
-    b.append(section("Latest", solo_card(C.YUIME, badge=C.YUIME["date"])))
-    b.append(section("Novel — Set editions", "\n".join(set_block(*s) for s in C.SETS)))
-    b.append(section("Novel — Single", solo_card(C.MELTOPIA)))
-    b.append(section("Essay & Poetry", solo_card(C.SHINSUI) + "\n" + solo_card(C.KEY)))
+    shelf = [solo_card(C.YUIME, badge=C.YUIME["date"])]
+    shelf += [set_block(*s) for s in C.SETS]
+    shelf.append(solo_card(C.MELTOPIA))
+    shelf.append(solo_card(C.SHINSUI))
+    shelf.append(solo_card(C.KEY))
+    b.append(sect("Books", "小説・詩集・エッセイ", "\n".join(shelf), anchor="books"))
+
+    others = [
+      subsec("Poem", P["poem"], mini("poem/", C.POEM_TITLE, "感慨を織り重ねて描写する詩的掌編。全文を掲載。", icon="poem"), anchor="poem"),
+      subsec("Tanka", P["tanka"], "\n".join(
+             mini("tanka/%s/" % w["slug"], w["title"], w["note"], icon="tanka") for w in C.TANKA_WORKS), anchor="tanka"),
+      subsec("Theater", P["theater"], mini(C.THEATER["url"], C.THEATER["title"],
+             "%s %s。本編映像。" % (C.THEATER["company"], C.THEATER["note"]),
+             external=True, thumb="thumb-dejika.webp"), anchor="theater"),
+      subsec("App", P["app"], "\n".join(
+             mini(a["url"], a["title"], a["desc"], external=True, thumb=a["thumb"]) for a in C.APPS), anchor="app"),
+    ]
+    b.append('  <div class="section">\n%s\n  </div>' % "\n".join(others))
+
     books_ld = [{"@type":"ListItem","position":i+1,"item":{"@type":"Book","name":n,"author":{"@id":AUTHOR_ID},
                  "inLanguage":"ja","url":AMZ % a}} for i,(n,a) in enumerate(
                  [(C.YUIME["title"],C.YUIME["kindle"])] +
-                 [(c["title"],c["asin"]) for s in C.SETS for c in s[3]] +
+                 [(c["title"],c["asin"]) for st in C.SETS for c in st[3]] +
                  [(C.MELTOPIA["title"],C.MELTOPIA["asin"]),(C.SHINSUI["title"],C.SHINSUI["asin"]),(C.KEY["title"],C.KEY["asin"])])]
-    made.append(("works/books/index.html", page(2, "works/books/", "Books｜吾妻大夢 Station",
-      "吾妻大夢の小説・詩集・エッセイ一覧。マジックリアリズム幻想小説、思索小説を中心に、Amazon KDPにて発売中。",
-      "\n".join(b), "works/books/", jsonld={"@context":"https://schema.org","@type":"ItemList",
+    made.append(("works/index.html", page(1, "works/", "Works｜吾妻大夢 Station",
+      "吾妻大夢の作品。小説・詩集・エッセイ13冊を軸に、詩、短歌、演劇、アプリケーション。",
+      "\n".join(b), "works/", jsonld={"@context":"https://schema.org","@type":"ItemList",
       "name":"吾妻大夢 作品一覧","itemListElement":books_ld})))
 
-    # ---------------------------------------------------------- Poem
-    b = [crumbs(2, [("../","Works"), (None,"Poem")]),
-         ph("Poem", "詩 — %s" % C.POEM_TITLE, "感慨を織り重ねて描写する詩的掌編。"),
+    # ============================================================ Poem
+    b = [crumbs(2, [("../","Works"), (None,"Poem"), (None, C.POEM_TITLE)]),
+         ph(C.POEM_TITLE, "Poem", P["poem"]),
          paras(C.POEM, "poem"),
-         '  <div class="prose-end"></div>\n'
-         '  <div class="linkrow reveal" style="justify-content:center;margin-top:2rem">'
+         '  <div class="linkrow reveal" style="justify-content:center;margin-top:2.2rem">'
          '<a class="ext" href="%s" target="_blank" rel="noopener">Kindle版</a></div>' % (AMZ % C.POEM_ASIN)]
     made.append(("works/poem/index.html", page(2, "works/poem/", "空力の考察｜Poem｜吾妻大夢 Station",
       "吾妻大夢の詩的掌編『空力の考察』全文。感慨を織り重ねて描写する。", "\n".join(b), "works/poem/",
-      ogtitle="空力の考察 — 吾妻大夢",
+      ogtitle="空力の考察 — %s" % P["poem"],
       jsonld={"@context":"https://schema.org","@type":"CreativeWork","name":C.POEM_TITLE,
               "genre":"詩","inLanguage":"ja","author":PERSON})))
 
-    # ---------------------------------------------------------- Tanka
-    groups = [g.strip() for g in C.TANKA.split("\n\n") if g.strip()]
-    inner = []
-    for gi, g in enumerate(groups):
-        lines = "\n".join('      <div class="tanka">%s</div>' % esc(l) for l in g.split("\n"))
-        rule = '\n      <div class="tanka-rule"></div>' if gi < len(groups)-1 else ""
-        inner.append('    <div class="tanka-group">\n%s%s\n    </div>' % (lines, rule))
-    b = [crumbs(2, [("../","Works"), (None,"Tanka")]),
-         ph("Tanka", "短歌 — %s" % C.TANKA_TITLE, "二十五首の連作。"),
-         '  <div class="readpanel reveal">\n    <div class="tanka-set">\n%s\n    </div>\n  </div>' % "\n".join(inner)]
-    made.append(("works/tanka/index.html", page(2, "works/tanka/", "ディクショナリ｜Tanka｜吾妻大夢 Station",
-      "吾妻大夢の短歌連作『ディクショナリ』二十五首。", "\n".join(b), "works/tanka/",
-      ogtitle="ディクショナリ — 吾妻大夢 短歌",
-      jsonld={"@context":"https://schema.org","@type":"CreativeWork","name":C.TANKA_TITLE,
-              "genre":"短歌","inLanguage":"ja","author":PERSON})))
+    # ============================================================ Tanka（作品ごと）
+    for w in C.TANKA_WORKS:
+        groups = [g.strip() for g in w["text"].split("\n\n") if g.strip()]
+        inner = []
+        for gi, g in enumerate(groups):
+            lines = "\n".join('        <div class="tanka">%s</div>' % esc(l) for l in g.split("\n"))
+            rule = '\n        <div class="tanka-rule"></div>' if gi < len(groups)-1 else ""
+            inner.append('      <div class="tanka-group">\n%s%s\n      </div>' % (lines, rule))
+        n = sum(len(g.split("\n")) for g in groups)
+        b = [crumbs(3, [("../../","Works"), (None,"Tanka"), (None, w["title"])]),
+             ph(w["title"], "Tanka", P["tanka"]),
+             '  <div class="readpanel reveal">\n    <div class="tanka-set">\n%s\n    </div>\n  </div>'
+             % "\n".join(inner)]
+        made.append(("works/tanka/%s/index.html" % w["slug"], page(3, "works/tanka/%s/" % w["slug"],
+          "%s｜Tanka｜吾妻大夢 Station" % w["title"],
+          "吾妻大夢の短歌連作『%s』%d首。" % (w["title"], n), "\n".join(b), "works/",
+          ogtitle="%s — %s" % (w["title"], P["tanka"]),
+          jsonld={"@context":"https://schema.org","@type":"CreativeWork","name":w["title"],
+                  "genre":"短歌","inLanguage":"ja","author":PERSON})))
 
-    # ---------------------------------------------------------- Theater
-    t = C.THEATER
-    b = [crumbs(2, [("../","Works"), (None,"Theater")]),
-         ph("Theater", "演劇 — %s" % t["title"]),
-         '  <div class="solo-wrap reveal">\n    <div class="solo-card">\n      <div class="solo-body">\n'
-         '        <div class="c-tag">Theater · %s</div><h2 class="c-title">%s</h2>\n'
-         '        <div class="c-div"></div>\n'
-         '        <p class="c-desc">%s %s。</p>\n'
-         '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">本編を観る</a>'
-         '<a class="c-link" href="%s" target="_blank" rel="noopener">劇団チャンネル</a></div>\n'
-         '      </div>\n    </div>\n  </div>'
-         % (esc(t["note"]), esc(t["title"]), esc(t["company"]), esc(t["note"]), t["url"], t["channel"])]
-    made.append(("works/theater/index.html", page(2, "works/theater/", "デジカ｜Theater｜吾妻大夢 Station",
-      "『デジカ』京田辺、演劇ないん会 第16回本公演。本編映像を公開中。", "\n".join(b), "works/theater/",
-      ogtitle="デジカ — 京田辺、演劇ないん会")))
-
-    # ---------------------------------------------------------- App
-    a = C.APP
-    pts = "\n".join('    <p>%s</p>' % esc(x) for x in a["points"])
-    b = [crumbs(2, [("../","Works"), (None,"App")]),
-         ph("App", "アプリ — %s（%s）" % (a["title"], a["reading"]), a["lede"]),
-         '  <div class="readpanel reveal">\n    <p class="pull">%s</p>\n'
-         '    <div class="prose-end"></div>\n'
-         '    <div class="prose" style="margin-top:2.4rem">\n%s\n    </div>\n  </div>' % (esc(a["principle"]), pts),
-         '  <div class="linkrow reveal" style="justify-content:center;margin-top:2.4rem">'
-         '<a class="ext" href="%s" target="_blank" rel="noopener">接鳴をひらく →</a></div>' % a["url"]]
-    made.append(("works/app/index.html", page(2, "works/app/", "接鳴｜App｜吾妻大夢 Station",
-      "接鳴（せつめい）— 電子焚火。音のオブジェクトを配置し、その位置関係だけで音楽が組み上がるインタラクティブ楽器。",
-      "\n".join(b), "works/app/", ogtitle="接鳴 — 電子焚火")))
-
-    # ---------------------------------------------------------- For You
-    b = [crumbs(1, [(None,"For You")]), ph("For You", "あなたへ"),
-         '  <div class="readpanel reveal" style="margin-top:1rem">\n    <p class="pull">%s</p>\n  </div>' % esc(C.FOR_YOU),
-         '  <div class="prose-end"></div>']
-    made.append(("for-you/index.html", page(1, "for-you/", "For You｜吾妻大夢 Station",
-      "絶望にひたされていても、どこかにはずみはあるはずで。吾妻大夢から、あなたへ。",
-      "\n".join(b), "for-you/", ogtitle="For You — 吾妻大夢")))
-
-    # ---------------------------------------------------------- Contact
+    # ============================================================ Contact
     b = [crumbs(1, [(None,"Contact")]), ph("Contact", "連絡", "ご感想、ご依頼、なんでもどうぞ。"),
          '  <div class="linkrow reveal" style="justify-content:center">'
          '<a class="ext" href="mailto:%s">%s</a></div>' % (C.EMAIL, C.EMAIL),
          '  <div class="linkrow reveal" style="justify-content:center;margin-top:1rem">'
          '<a class="ext" href="%s" target="_blank" rel="noopener">X</a>'
-         '<a class="ext" href="%s" target="_blank" rel="noopener">note</a></div>' % (C.X_URL, C.NOTE_URL),
+         '<a class="ext" href="%s" target="_blank" rel="noopener">note</a>'
+         '<a class="ext" href="%s" target="_blank" rel="noopener">YouTube</a></div>' % (C.X_URL, C.NOTE_URL, C.YT_URL),
          '  <div class="ph-lead reveal" style="text-align:center;margin-top:2.6rem">%s</div>' % esc(C.PROFILE)]
     made.append(("contact/index.html", page(1, "contact/", "Contact｜吾妻大夢 Station",
       "吾妻大夢への連絡先。メール、X、note。", "\n".join(b), "contact/")))
@@ -413,7 +441,7 @@ def build():
     total = 0
     for path, text in made:
         n = write(path, text); total += n
-        print("  %-34s %6.1f KB" % (path, n/1024.0))
+        print("  %-30s %6.1f KB" % (path, n/1024.0))
     print("%d ページ / 合計 %.1f KB" % (len(made), total/1024.0))
 
 if __name__ == "__main__":

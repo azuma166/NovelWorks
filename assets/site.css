@@ -1,6 +1,6 @@
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
 
-html { -webkit-text-size-adjust:100%; }
+html { -webkit-text-size-adjust:100%; overflow-x:hidden; }
 
 body {
   font-family:'Noto Serif JP',serif;
@@ -13,8 +13,8 @@ body {
 
 .bg-base {
   position:fixed;
-  top:-11%; left:0;
-  width:100%; height:122%;
+  top:-11%; left:0; right:0;
+  width:auto; height:122%;
   object-fit:cover;
   pointer-events:none;
   z-index:0;
@@ -23,8 +23,8 @@ body {
 }
 .bg-canvas {
   position:fixed;
-  top:-11%; left:0;
-  width:100%; height:122%;
+  top:-11%; left:0; right:0;
+  width:auto; height:122%;
   pointer-events:none;
   z-index:0;
   will-change:transform;
@@ -34,8 +34,8 @@ body {
 :root { --sp:0; }
 
 .progress {
-  position:fixed; top:0; left:0; z-index:6;
-  width:100%; height:1.5px;
+  position:fixed; top:0; left:0; right:0; z-index:6;
+  width:auto; height:1.5px;
   transform-origin:0 50%; transform:scaleX(var(--sp));
   background:linear-gradient(90deg,#5f6f8c,#dde6f4,#8b9cba,#c6a444,#fbf3d4,#b4902f);
   pointer-events:none; will-change:transform;
@@ -50,8 +50,8 @@ body {
 @keyframes flowdash3 { to { stroke-dashoffset:-80; } }
 
 .progress {
-  position:fixed; top:0; left:0; z-index:6;
-  width:100%; height:1.5px;
+  position:fixed; top:0; left:0; right:0; z-index:6;
+  width:auto; height:1.5px;
   transform-origin:0 50%; transform:scaleX(var(--sp));
   background:linear-gradient(90deg,#5f6f8c,#dde6f4,#8b9cba,#c6a444,#fbf3d4,#b4902f);
   pointer-events:none;
@@ -278,3 +278,98 @@ body {
   box-shadow:0 1px 20px rgba(60,80,140,0.05); padding:3rem 2.8rem; }
 .readpanel + .readpanel { margin-top:1.4rem; }
 @media (max-width:640px) { .readpanel { padding:1.9rem 1.2rem; } }
+
+/* ================= 見出しに添える文 ================= */
+.section-label { display:block; }
+.sl-en { font-family:'Cormorant Garamond',serif; font-size:1.15rem; letter-spacing:0.2em; color:#1a1a2e; font-weight:400; }
+.sl-sub { display:block; margin-top:0.5rem; font-size:12.5px; letter-spacing:0.09em; color:#5a6a92; font-weight:300; }
+
+/* ================= コラム: 最小単位の行 ================= */
+.col-list { border-top:0.5px solid rgba(60,80,140,0.16); }
+.col-row { display:flex; align-items:baseline; gap:0.9rem; padding:0.95rem 0.6rem;
+  border-bottom:0.5px solid rgba(60,80,140,0.16); text-decoration:none; color:inherit; transition:background 0.2s, padding-left 0.2s; }
+.col-row:hover { background:rgba(220,225,240,0.4); padding-left:1rem; }
+.col-title { font-size:15px; letter-spacing:0.1em; color:#1a1a2e; flex-shrink:0; }
+.col-sub { font-size:11.5px; letter-spacing:0.04em; color:#5a6a92; font-weight:300; flex:1; min-width:0; }
+.col-arrow { font-size:11px; color:#8090ae; flex-shrink:0; }
+
+/* ================= 従の作品: 小さいカード ================= */
+.mini { display:flex; align-items:baseline; gap:0.9rem; padding:1.05rem 1.25rem; text-decoration:none; color:inherit;
+  border:0.5px solid rgba(60,80,140,0.18); background:rgba(247,248,251,0.9); transition:background 0.2s, border-color 0.2s; }
+.mini:hover { background:rgba(220,225,240,0.42); border-color:rgba(60,80,140,0.4); }
+.mini-title { font-size:14.5px; letter-spacing:0.09em; color:#1a1a2e; flex-shrink:0; }
+.mini-desc { font-size:11.5px; line-height:1.85; color:#5a6a92; font-weight:300; flex:1; min-width:0; }
+.mini-arrow { font-size:11px; color:#8090ae; flex-shrink:0; }
+.subsection { margin-bottom:1.9rem; }
+.subsection:last-child { margin-bottom:0; }
+.sub-label { font-size:11.5px; letter-spacing:0.2em; color:#5a6a92; margin-bottom:0.7rem; }
+.sub-label .sub-phrase { color:#7d8bab; letter-spacing:0.06em; margin-left:0.7rem; font-size:11.5px; }
+
+/* ================= Station の Works 入口 ================= */
+.gate { display:block; text-decoration:none; color:inherit; border:0.5px solid rgba(60,80,140,0.3);
+  background:rgba(247,248,251,0.93); padding:1.6rem 1.7rem; transition:background 0.2s, border-color 0.2s, transform 0.2s; }
+.gate:hover { background:rgba(220,225,240,0.45); border-color:rgba(60,80,140,0.5); transform:translateY(-2px); }
+.gate-top { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
+.gate-en { font-family:'Cormorant Garamond',serif; font-size:1.7rem; letter-spacing:0.14em; }
+.gate-items { margin-top:0.9rem; padding-top:0.8rem; border-top:0.5px solid rgba(60,80,140,0.14);
+  font-size:11.5px; line-height:1.95; color:#7d8bab; font-weight:300; }
+
+@media (max-width:640px) {
+  .sl-en { font-size:1.05rem; }
+  .sl-sub { font-size:12.5px; }
+  .col-row { padding:1.05rem 0.4rem; flex-wrap:wrap; gap:0.3rem 0.9rem; }
+  .col-title { font-size:15.5px; }
+  .col-sub { flex-basis:100%; font-size:12px; }
+  .mini { flex-wrap:wrap; gap:0.35rem 0.9rem; padding:1.1rem 1.1rem; }
+  .mini-desc { flex-basis:100%; font-size:12px; }
+}
+
+/* ================= アイコンと図版 ================= */
+.ico { flex-shrink:0; fill:none; stroke:#5a6a92; stroke-width:1.15; stroke-linecap:round; stroke-linejoin:round; }
+.ico .g { stroke:#a5851f; }
+.ico .f { fill:#a5851f; stroke:none; }
+.ico .d { stroke:#8fa0c0; }
+
+.col-row .ico { width:32px; height:32px; }
+.col-row { align-items:center; }
+
+.mini { align-items:center; gap:1.1rem; padding:0.9rem 1.1rem; }
+.mini-plate { width:108px; height:70px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  border:0.5px solid rgba(60,80,140,0.2); background:rgba(232,236,245,0.5); overflow:hidden; }
+.mini-plate .ico { width:40px; height:40px; }
+.mini-thumb { width:108px; height:70px; flex-shrink:0; display:block; object-fit:cover;
+  border:0.5px solid rgba(60,80,140,0.2); background:#e8ecf5; }
+
+/* 表紙をもう少し大きく */
+.cover-wrap img { width:84px; }
+.cover-sm img { width:60px; }
+
+/* Station の Works 入口に背表紙を並べる */
+.gate-covers { display:flex; gap:7px; margin-top:1rem; }
+.gate-covers img { width:46px; display:block; border:0.5px solid rgba(60,80,140,0.22); }
+
+@media (max-width:640px) {
+  .cover-wrap img { width:104px; }
+  .cover-sm img { width:64px; }
+  .mini { gap:0.9rem; }
+  .mini-plate, .mini-thumb { width:88px; height:58px; }
+  .mini-plate .ico { width:34px; height:34px; }
+  .mini-desc { flex-basis:100%; }
+  .col-row .ico { width:28px; height:28px; }
+  .gate-covers img { width:42px; }
+}
+
+/* ================= スマホ: カード行の折返しを格子で整える ================= */
+@media (max-width:640px) {
+  .mini { display:grid; grid-template-columns:auto minmax(0,1fr); gap:0.25rem 0.9rem; align-items:center; }
+  .mini-plate, .mini-thumb { grid-row:1 / span 2; align-self:center; }
+  .mini-title { grid-column:2; }
+  .mini-desc  { grid-column:2; flex-basis:auto; }
+  .mini-arrow { display:none; }
+
+  .col-row { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:0.2rem 0.8rem; align-items:center; }
+  .col-row .ico { grid-row:1 / span 2; align-self:center; }
+  .col-title { grid-column:2; }
+  .col-sub   { grid-column:2; flex-basis:auto; }
+  .col-arrow { grid-column:3; grid-row:1 / span 2; align-self:center; }
+}
