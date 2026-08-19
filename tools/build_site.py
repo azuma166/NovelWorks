@@ -212,30 +212,19 @@ def paras(text, cls="prose"):
     return ('  <div class="readpanel reveal">\n    <div class="%s">\n%s\n    </div>\n  </div>'
             % (cls, "\n".join("  "+o for o in out)))
 
-# ================================================================= ページ定義
-AUTHOR_ID = C.SITE_ROOT + "#author"
-PERSON = {"@type":"Person","@id":AUTHOR_ID,"name":"吾妻大夢","alternateName":"Hiromu Azuma",
-          "jobTitle":"小説家","description":C.PROFILE,"url":C.SITE_ROOT,
-          "sameAs":[C.X_URL, C.NOTE_URL]}
-P = C.PHRASE
-
-
 # ================================================================= アイコン
 ICONS = {
- # 天使: 光輪とひらいた翼
  "tenshi": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
    '<ellipse cx="24" cy="11" rx="8.5" ry="3.4" class="g"/>'
    '<path d="M6 41 C12 25 19 20 24 20 C29 20 36 25 42 41"/>'
    '<path d="M13 41 C17 30 20.5 26 24 26 C27.5 26 31 30 35 41" class="d"/>'
    '<circle cx="24" cy="20" r="1.6" class="f"/></svg>',
- # 触診: 面に触れる円と、そこから広がる波
  "shokushin": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
    '<circle cx="24" cy="20" r="11"/>'
    '<line x1="4" y1="31" x2="44" y2="31"/>'
    '<circle cx="24" cy="31" r="2" class="f"/>'
    '<path d="M13 36 Q24 41 35 36" class="d"/>'
    '<path d="M8 41 Q24 48 40 41" class="d"/></svg>',
- # 接続: 結ばれた節点
  "setsuzoku": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
    '<line x1="10" y1="13" x2="24" y2="25"/><line x1="24" y1="25" x2="39" y2="11"/>'
    '<line x1="24" y1="25" x2="11" y2="38"/><line x1="24" y1="25" x2="38" y2="37"/>'
@@ -243,12 +232,10 @@ ICONS = {
    '<circle cx="24" cy="25" r="3" class="f"/>'
    '<circle cx="10" cy="13" r="2.3"/><circle cx="39" cy="11" r="2.3"/>'
    '<circle cx="11" cy="38" r="2.3"/><circle cx="38" cy="37" r="2.3"/></svg>',
- # 詩: 重なる波
  "poem": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
    '<path d="M4 17 Q12 8 20 17 T36 17 T52 17"/>'
    '<path d="M4 25 Q12 16 20 25 T36 25 T52 25" class="g"/>'
    '<path d="M4 33 Q12 24 20 33 T36 33 T52 33" class="d"/></svg>',
- # 短歌: 五七五七七の律
  "tanka": '<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">'
    '<line x1="14" y1="10" x2="34" y2="10"/>'
    '<line x1="10" y1="19" x2="38" y2="19" class="g"/>'
@@ -257,7 +244,29 @@ ICONS = {
    '<line x1="10" y1="44" x2="38" y2="44"/></svg>',
 }
 
-GATE_COVERS = ["B0HFNHM1B7","B0B12RN7ZN","B0C576Q4CT","B0GFWDKKJY","B0F9VCQNRV"]
+# ================================================================= ページ定義
+AUTHOR_ID = C.SITE_ROOT + "#author"
+PERSON = {"@type":"Person","@id":AUTHOR_ID,"name":"吾妻大夢","alternateName":"Hiromu Azuma",
+          "jobTitle":"小説家","description":C.PROFILE,"url":C.SITE_ROOT,
+          "sameAs":[C.X_URL, C.NOTE_URL, C.YT_URL]}
+P = C.PHRASE
+
+# --- 外部リンクのアイコン ---
+SOCIAL_SVG = {
+ "x": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>',
+ "note": '<svg viewBox="0 0 24 24" class="stroked" aria-hidden="true">'
+         '<rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5"/>'
+         '<path d="M8.6 16.4V9.1c1.6-1.1 3.2-1.6 4.6-1.6 1.6 0 2.4.9 2.4 2.6v6.3"/></svg>',
+ "youtube": '<svg viewBox="0 0 24 24" aria-hidden="true">'
+            '<path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.5 4.6 12 4.6 12 4.6s-7.5 0-9.4.5A3 3 0 0 0 .5 7.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-4.8zM9.6 15.6V8.4l6.3 3.6z"/></svg>',
+}
+def social(depth=0):
+    return ('    <div class="icon-links reveal">\n'
+            '      <a class="ilink" href="%s" target="_blank" rel="noopener" aria-label="X" title="X">%s</a>\n'
+            '      <a class="ilink" href="%s" target="_blank" rel="noopener" aria-label="note" title="note">%s</a>\n'
+            '      <a class="ilink" href="%s" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">%s</a>\n'
+            '    </div>' % (C.X_URL, SOCIAL_SVG["x"], C.NOTE_URL, SOCIAL_SVG["note"],
+                            C.YT_URL, SOCIAL_SVG["youtube"]))
 
 def label(en, phrase, anchor=None):
     a = ' id="%s"' % anchor if anchor else ""
@@ -269,10 +278,9 @@ def sect(en, phrase, inner, anchor=None):
     return '  <div class="section">\n%s\n%s\n  </div>' % (label(en, phrase, anchor), inner)
 
 def col_row(href, title, sub, icon=None):
-    ic = ICONS.get(icon, "")
     return ('      <a class="col-row" href="%s">%s<span class="col-title">%s</span>'
             '<span class="col-sub">%s</span><span class="col-arrow">→</span></a>'
-            % (href, ic, esc(title), esc(sub)))
+            % (href, ICONS.get(icon, ""), esc(title), esc(sub)))
 
 def mini(href, title, desc, external=False, icon=None, thumb=None, depth=1):
     tgt = ' target="_blank" rel="noopener"' if external else ""
@@ -286,11 +294,17 @@ def mini(href, title, desc, external=False, icon=None, thumb=None, depth=1):
             '<span class="mini-desc">%s</span><span class="mini-arrow">%s</span></a>'
             % (href, tgt, vis, esc(title), esc(desc), "↗" if external else "→"))
 
-def subsec(en, phrase, inner, anchor=None):
-    ph_ = '<span class="sub-phrase">%s</span>' % esc(phrase) if phrase else ""
-    a = ' id="%s"' % anchor if anchor else ""
-    return ('    <div class="subsection"%s>\n      <div class="sub-label">%s%s</div>\n%s\n    </div>'
-            % (a, esc(en), ph_, inner))
+def wcard(href, en, phrase, visual, items, external=False):
+    tgt = ' target="_blank" rel="noopener"' if external else ""
+    return ('      <a class="wcard" href="%s"%s>\n'
+            '        <div class="wcard-top"><span class="wcard-en">%s</span><span class="hub-arrow">%s</span></div>\n'
+            '        <div class="wcard-phrase">%s</div>\n'
+            '        <div class="wcard-visual">%s</div>\n'
+            '        <div class="wcard-items">%s</div>\n      </a>'
+            % (href, tgt, esc(en), "↗" if external else "→", esc(phrase), visual, items))
+
+def cv(asin, depth=1):  return '<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % asin)
+def sh(name, depth=1):  return '<img class="sh" src="%sassets/%s" alt="" loading="lazy">' % (up(depth), name)
 
 def build():
     made = []
@@ -303,34 +317,37 @@ def build():
          '      <div class="wh-rule"></div>\n      <p class="wh-bio">%s</p>\n    </div>\n  </div>'
          % (esc(C.LEAD), esc(C.BIO))]
 
-    # Now — 最新作をそのまま置く（Books と同じ書式）
     b.append(sect("Now", P["now"], solo_card(C.YUIME, badge=C.YUIME["date"]), anchor="now"))
 
-    # Column — 最小単位の行
-    rows = "\n".join(col_row("column/%s/" % slug, jp, lede, icon=slug) for slug, jp, en, lede, _ in C.COLUMN)
+    rows = "\n".join(col_row("column/%s/" % slug, jp, lede, icon=slug)
+                     for slug, jp, en, lede, _ in C.COLUMN)
     b.append(sect("Column", P["column"],
         '    <div class="col-list reveal">\n%s\n    </div>' % rows, anchor="column"))
 
-    # Links
-    b.append(sect("Links", P["links"],
-        '    <div class="linkrow reveal">\n'
-        '      <a class="ext" href="%s" target="_blank" rel="noopener">X</a>\n'
-        '      <a class="ext" href="%s" target="_blank" rel="noopener">note</a>\n'
-        '      <a class="ext" href="%s" target="_blank" rel="noopener">YouTube</a>\n    </div>'
-        % (C.X_URL, C.NOTE_URL, C.YT_URL), anchor="links"))
+    b.append(sect("Links", P["links"], social(0), anchor="links"))
 
-    # Works — 入口ひとつ
-    covers = "".join('<img src="%s" alt="" loading="lazy">' % (COVER % a) for a in GATE_COVERS)
+    # Works — 色々な作品の要素をひとつのカードに
+    bits = [
+      ('<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % "B0HFNHM1B7"), "-7deg"),
+      ('<span class="plate">%s</span>' % ICONS["tanka"], "5deg"),
+      ('<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % "B0B12RN7ZN"), "-3deg"),
+      ('<img class="sh" src="assets/thumb-dejika.webp" alt="" loading="lazy">', "4deg"),
+      ('<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % "B0GFWDKKJY"), "-5deg"),
+      ('<span class="plate">%s</span>' % ICONS["poem"], "6deg"),
+      ('<img class="sh" src="assets/thumb-setsumei.webp" alt="" loading="lazy">', "-4deg"),
+      ('<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % "B0F9VCQNRV"), "3deg"),
+    ]
+    strip = "".join('<span style="--r:%s">%s</span>' % (r, h) for h, r in bits)
     b.append(sect("Works", P["works"],
-        '    <a class="gate reveal" href="works/">\n'
-        '      <div class="gate-top"><span class="gate-en">Works</span><span class="hub-arrow">→</span></div>\n'
-        '      <div class="gate-covers">' + covers + '</div>\n'
-        '      <div class="gate-items">Books — 小説・詩集・エッセイ 13冊<br>'
-        'Poem／Tanka／Theater／App</div>\n    </a>', anchor="works"))
+        '    <a class="collage reveal" href="works/">\n'
+        '      <div class="collage-strip">%s</div>\n'
+        '      <div class="collage-bottom"><span class="wcard-en">Works</span>'
+        '<span class="hub-arrow">→</span></div>\n'
+        '      <div class="wcard-items">Books ／ Poem ／ Tanka ／ Theater ／ App</div>\n'
+        '    </a>' % strip, anchor="works"))
 
-    # For You — メッセージをそのまま
     b.append(sect("For You", P["for_you"],
-        '    <div class="readpanel reveal">\n      <p class="pull">%s</p>\n    </div>' % esc(C.FOR_YOU),
+        '    <div class="whisper-wrap reveal">\n      <p class="whisper">%s</p>\n    </div>' % esc(C.FOR_YOU),
         anchor="for-you"))
 
     b.append(sect("Contact", "",
@@ -345,16 +362,14 @@ def build():
 
     # ============================================================ Column
     rows = "\n".join(col_row("%s/" % slug, jp, lede, icon=slug) for slug, jp, en, lede, _ in C.COLUMN)
-    b = [crumbs(1, [(None,"Column")]),
-         ph("Column", "コラム", P["column"]),
+    b = [crumbs(1, [(None,"Column")]), ph("Column", "コラム", P["column"]),
          '  <div class="col-list reveal">\n%s\n  </div>' % rows]
     made.append(("column/index.html", page(1, "column/", "Column｜吾妻大夢 Station",
       "吾妻大夢のコラム。天使、触診、接続。", "\n".join(b), "column/")))
 
     for slug, jp, en, lede, text in C.COLUMN:
-        snippet = text.replace("\n", "").replace("　", "")[:95] + "…"
-        b = [crumbs(2, [("../","Column"), (None, jp)]),
-             ph(jp, en, lede), paras(text, "prose")]
+        snippet = text.replace("\n","").replace("　","")[:95] + "…"
+        b = [crumbs(2, [("../","Column"), (None, jp)]), ph(jp, en, lede), paras(text, "prose")]
         made.append(("column/%s/index.html" % slug, page(2, "column/%s/" % slug,
           "%s｜Column｜吾妻大夢 Station" % jp, snippet, "\n".join(b), "column/",
           ogtitle="%s — %s" % (jp, lede),
@@ -362,51 +377,62 @@ def build():
                   "alternativeHeadline":en,"description":lede,"inLanguage":"ja",
                   "author":PERSON,"mainEntityOfPage":C.SITE_ROOT+"column/%s/" % slug})))
 
-    # ============================================================ Works（主＝Books、従＝その他）
-    b = [crumbs(1, [(None,"Works")]), ph("Works", "作品", P["works"])]
+    # ============================================================ Works（5つを同階層に）
+    cards = [
+      wcard("books/", "Books", P["books"],
+            "".join(cv(a) for a in ["B0HFNHM1B7","B0B12RN7ZN","B0BWT14YM1","B0C576Q4CT","B0FPCZ39NC","B0GFWDKKJY","B0F9VCQNRV"]),
+            "小説・詩集・エッセイ 13冊 — ゆいめ／みぎうで／灯花／絵喰い／Debris／錆びた平方／shuffle／shape／パラレルの耐用／Meltopia／浸水地帯／Key"),
+      wcard("poem/", "Poem", P["poem"], '<span class="wplate">%s</span>' % ICONS["poem"], "空力の考察 — 詩的掌編。全文を掲載。"),
+      wcard("tanka/", "Tanka", P["tanka"], '<span class="wplate">%s</span>' % ICONS["tanka"], "ディクショナリ／戯画 — 二十五首の連作、二作。"),
+      wcard("theater/", "Theater", P["theater"], sh("thumb-dejika.webp"),
+            "デジカ — 京田辺、演劇ないん会 第16回本公演。"),
+      wcard("app/", "App", P["app"], sh("thumb-setsumei.webp") + sh("thumb-croqkey.webp"),
+            "接鳴（電子焚火）／CroqKey"),
+    ]
+    b = [crumbs(1, [(None,"Works")]), ph("Works", "作品", P["works"]),
+         '  <div class="wgrid reveal">\n%s\n  </div>' % "\n".join(cards)]
+    made.append(("works/index.html", page(1, "works/", "Works｜吾妻大夢 Station",
+      "吾妻大夢の作品。小説、詩、短歌、演劇、アプリケーション。", "\n".join(b), "works/")))
 
+    # ============================================================ Books
     shelf = [solo_card(C.YUIME, badge=C.YUIME["date"])]
-    shelf += [set_block(*s) for s in C.SETS]
+    shelf += [set_block(*st) for st in C.SETS]
     shelf.append(solo_card(C.MELTOPIA))
     shelf.append(solo_card(C.SHINSUI))
     shelf.append(solo_card(C.KEY))
-    b.append(sect("Books", "小説・詩集・エッセイ", "\n".join(shelf), anchor="books"))
-
-    others = [
-      subsec("Poem", P["poem"], mini("poem/", C.POEM_TITLE, "感慨を織り重ねて描写する詩的掌編。全文を掲載。", icon="poem"), anchor="poem"),
-      subsec("Tanka", P["tanka"], "\n".join(
-             mini("tanka/%s/" % w["slug"], w["title"], w["note"], icon="tanka") for w in C.TANKA_WORKS), anchor="tanka"),
-      subsec("Theater", P["theater"], mini(C.THEATER["url"], C.THEATER["title"],
-             "%s %s。本編映像。" % (C.THEATER["company"], C.THEATER["note"]),
-             external=True, thumb="thumb-dejika.webp"), anchor="theater"),
-      subsec("App", P["app"], "\n".join(
-             mini(a["url"], a["title"], a["desc"], external=True, thumb=a["thumb"]) for a in C.APPS), anchor="app"),
-    ]
-    b.append('  <div class="section">\n%s\n  </div>' % "\n".join(others))
-
+    b = [crumbs(2, [("../","Works"), (None,"Books")]),
+         ph("Books", "小説・詩集・エッセイ", P["books"]), "\n".join(shelf)]
     books_ld = [{"@type":"ListItem","position":i+1,"item":{"@type":"Book","name":n,"author":{"@id":AUTHOR_ID},
                  "inLanguage":"ja","url":AMZ % a}} for i,(n,a) in enumerate(
                  [(C.YUIME["title"],C.YUIME["kindle"])] +
                  [(c["title"],c["asin"]) for st in C.SETS for c in st[3]] +
                  [(C.MELTOPIA["title"],C.MELTOPIA["asin"]),(C.SHINSUI["title"],C.SHINSUI["asin"]),(C.KEY["title"],C.KEY["asin"])])]
-    made.append(("works/index.html", page(1, "works/", "Works｜吾妻大夢 Station",
-      "吾妻大夢の作品。小説・詩集・エッセイ13冊を軸に、詩、短歌、演劇、アプリケーション。",
-      "\n".join(b), "works/", jsonld={"@context":"https://schema.org","@type":"ItemList",
-      "name":"吾妻大夢 作品一覧","itemListElement":books_ld})))
+    made.append(("works/books/index.html", page(2, "works/books/", "Books｜吾妻大夢 Station",
+      "吾妻大夢の小説・詩集・エッセイ一覧。マジックリアリズム幻想小説、思索小説を中心に、Amazon KDPにて発売中。",
+      "\n".join(b), "works/", ogtitle="Books — %s" % P["books"],
+      jsonld={"@context":"https://schema.org","@type":"ItemList","name":"吾妻大夢 作品一覧",
+              "itemListElement":books_ld})))
 
     # ============================================================ Poem
-    b = [crumbs(2, [("../","Works"), (None,"Poem"), (None, C.POEM_TITLE)]),
-         ph(C.POEM_TITLE, "Poem", P["poem"]),
-         paras(C.POEM, "poem"),
+    b = [crumbs(2, [("../","Works"), (None,"Poem")]),
+         ph(C.POEM_TITLE, "Poem", P["poem"]), paras(C.POEM, "poem"),
          '  <div class="linkrow reveal" style="justify-content:center;margin-top:2.2rem">'
          '<a class="ext" href="%s" target="_blank" rel="noopener">Kindle版</a></div>' % (AMZ % C.POEM_ASIN)]
     made.append(("works/poem/index.html", page(2, "works/poem/", "空力の考察｜Poem｜吾妻大夢 Station",
-      "吾妻大夢の詩的掌編『空力の考察』全文。感慨を織り重ねて描写する。", "\n".join(b), "works/poem/",
+      "吾妻大夢の詩的掌編『空力の考察』全文。", "\n".join(b), "works/",
       ogtitle="空力の考察 — %s" % P["poem"],
       jsonld={"@context":"https://schema.org","@type":"CreativeWork","name":C.POEM_TITLE,
               "genre":"詩","inLanguage":"ja","author":PERSON})))
 
-    # ============================================================ Tanka（作品ごと）
+    # ============================================================ Tanka
+    minis = "\n".join(mini("%s/" % w["slug"], w["title"], w["note"], icon="tanka", depth=2)
+                      for w in C.TANKA_WORKS)
+    b = [crumbs(2, [("../","Works"), (None,"Tanka")]), ph("Tanka", "短歌", P["tanka"]),
+         '  <div class="reveal">\n%s\n  </div>' % minis]
+    made.append(("works/tanka/index.html", page(2, "works/tanka/", "Tanka｜吾妻大夢 Station",
+      "吾妻大夢の短歌。ディクショナリ、戯画。", "\n".join(b), "works/",
+      ogtitle="Tanka — %s" % P["tanka"])))
+
     for w in C.TANKA_WORKS:
         groups = [g.strip() for g in w["text"].split("\n\n") if g.strip()]
         inner = []
@@ -415,10 +441,9 @@ def build():
             rule = '\n        <div class="tanka-rule"></div>' if gi < len(groups)-1 else ""
             inner.append('      <div class="tanka-group">\n%s%s\n      </div>' % (lines, rule))
         n = sum(len(g.split("\n")) for g in groups)
-        b = [crumbs(3, [("../../","Works"), (None,"Tanka"), (None, w["title"])]),
+        b = [crumbs(3, [("../../","Works"), ("../","Tanka"), (None, w["title"])]),
              ph(w["title"], "Tanka", P["tanka"]),
-             '  <div class="readpanel reveal">\n    <div class="tanka-set">\n%s\n    </div>\n  </div>'
-             % "\n".join(inner)]
+             '  <div class="readpanel reveal">\n    <div class="tanka-set">\n%s\n    </div>\n  </div>' % "\n".join(inner)]
         made.append(("works/tanka/%s/index.html" % w["slug"], page(3, "works/tanka/%s/" % w["slug"],
           "%s｜Tanka｜吾妻大夢 Station" % w["title"],
           "吾妻大夢の短歌連作『%s』%d首。" % (w["title"], n), "\n".join(b), "works/",
@@ -426,22 +451,63 @@ def build():
           jsonld={"@context":"https://schema.org","@type":"CreativeWork","name":w["title"],
                   "genre":"短歌","inLanguage":"ja","author":PERSON})))
 
+    # ============================================================ Theater
+    t = C.THEATER
+    b = [crumbs(2, [("../","Works"), (None,"Theater")]), ph(t["title"], "Theater", P["theater"]),
+         '  <div class="solo-wrap reveal">\n    <div class="solo-card">\n'
+         '      <div class="cover-wrap"><img src="../../assets/thumb-dejika.webp" alt="%s" loading="lazy" style="width:150px"></div>\n'
+         '      <div class="solo-body">\n'
+         '        <div class="c-tag">Theater · %s</div><h2 class="c-title">%s</h2>\n'
+         '        <div class="c-div"></div>\n        <p class="c-desc">%s %s。</p>\n'
+         '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">本編を観る</a>'
+         '<a class="c-link" href="%s" target="_blank" rel="noopener">劇団チャンネル</a></div>\n'
+         '      </div>\n    </div>\n  </div>'
+         % (esc(t["title"]), esc(t["note"]), esc(t["title"]), esc(t["company"]), esc(t["note"]),
+            t["url"], t["channel"])]
+    made.append(("works/theater/index.html", page(2, "works/theater/", "デジカ｜Theater｜吾妻大夢 Station",
+      "『デジカ』京田辺、演劇ないん会 第16回本公演。本編映像を公開中。", "\n".join(b), "works/",
+      ogtitle="デジカ — %s" % P["theater"])))
+
+    # ============================================================ App
+    a = C.APP
+    pts = "\n".join('      <p>%s</p>' % esc(x) for x in a["points"])
+    b = [crumbs(2, [("../","Works"), (None,"App")]), ph("App", "アプリ", P["app"])]
+    b.append('  <div class="solo-wrap reveal">\n    <div class="solo-card">\n'
+        '      <div class="cover-wrap"><img src="../../assets/thumb-setsumei.webp" alt="接鳴" loading="lazy" style="width:150px"></div>\n'
+        '      <div class="solo-body">\n        <div class="c-tag">App · Instrument</div>'
+        '<h2 class="c-title">接鳴（%s）</h2>\n        <div class="c-div"></div>\n'
+        '        <p class="c-desc">%s</p>\n'
+        '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">ひらく</a></div>\n'
+        '      </div>\n    </div>\n  </div>' % (esc(a["reading"]), esc(a["lede"]), a["url"]))
+    b.append('  <div class="readpanel reveal">\n    <p class="pull">%s</p>\n'
+             '    <div class="prose-end"></div>\n'
+             '    <div class="prose" style="margin-top:2.2rem">\n%s\n    </div>\n  </div>'
+             % (esc(a["principle"]), pts))
+    ck = C.APPS[1]
+    b.append('  <div class="solo-wrap reveal" style="margin-top:1.6rem">\n    <div class="solo-card">\n'
+        '      <div class="cover-wrap"><img src="../../assets/thumb-croqkey.webp" alt="CroqKey" loading="lazy" style="width:150px"></div>\n'
+        '      <div class="solo-body">\n        <div class="c-tag">App · Game</div>'
+        '<h2 class="c-title">CroqKey</h2>\n        <div class="c-div"></div>\n'
+        '        <p class="c-desc">%s</p>\n'
+        '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">あそぶ</a></div>\n'
+        '      </div>\n    </div>\n  </div>' % (esc(ck["desc"]), ck["url"]))
+    made.append(("works/app/index.html", page(2, "works/app/", "App｜吾妻大夢 Station",
+      "接鳴（電子焚火）と CroqKey。吾妻大夢のアプリケーション。", "\n".join(b), "works/",
+      ogtitle="App — %s" % P["app"])))
+
     # ============================================================ Contact
     b = [crumbs(1, [(None,"Contact")]), ph("Contact", "連絡", "ご感想、ご依頼、なんでもどうぞ。"),
          '  <div class="linkrow reveal" style="justify-content:center">'
          '<a class="ext" href="mailto:%s">%s</a></div>' % (C.EMAIL, C.EMAIL),
-         '  <div class="linkrow reveal" style="justify-content:center;margin-top:1rem">'
-         '<a class="ext" href="%s" target="_blank" rel="noopener">X</a>'
-         '<a class="ext" href="%s" target="_blank" rel="noopener">note</a>'
-         '<a class="ext" href="%s" target="_blank" rel="noopener">YouTube</a></div>' % (C.X_URL, C.NOTE_URL, C.YT_URL),
+         '  <div style="display:flex;justify-content:center;margin-top:1.2rem">\n%s\n  </div>' % social(1),
          '  <div class="ph-lead reveal" style="text-align:center;margin-top:2.6rem">%s</div>' % esc(C.PROFILE)]
     made.append(("contact/index.html", page(1, "contact/", "Contact｜吾妻大夢 Station",
-      "吾妻大夢への連絡先。メール、X、note。", "\n".join(b), "contact/")))
+      "吾妻大夢への連絡先。メール、X、note、YouTube。", "\n".join(b), "contact/")))
 
     total = 0
     for path, text in made:
         n = write(path, text); total += n
-        print("  %-30s %6.1f KB" % (path, n/1024.0))
+        print("  %-34s %6.1f KB" % (path, n/1024.0))
     print("%d ページ / 合計 %.1f KB" % (len(made), total/1024.0))
 
 if __name__ == "__main__":

@@ -373,3 +373,71 @@ body {
   .col-sub   { grid-column:2; flex-basis:auto; }
   .col-arrow { grid-column:3; grid-row:1 / span 2; align-self:center; }
 }
+
+/* ================= 外部リンクのアイコン ================= */
+.icon-links { display:flex; gap:10px; flex-wrap:wrap; }
+.ilink { width:46px; height:46px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  border:0.5px solid rgba(60,80,140,0.45); border-radius:2px; background:rgba(255,255,255,0.78);
+  color:#1a1a2e; text-decoration:none; transition:background 0.2s, color 0.2s, border-color 0.2s; }
+.ilink:hover { background:#1a1a2e; color:#f7f8fb; border-color:#1a1a2e; }
+.ilink svg { width:19px; height:19px; display:block; fill:currentColor; }
+.ilink svg.stroked { fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+
+/* ================= For You のささやき ================= */
+.whisper-wrap { max-width:32em; margin:0 auto; padding:1.5rem 1.3rem; background:rgba(247,248,251,0.8); }
+.whisper { font-size:12.5px; line-height:2.35; color:#4a5570; font-weight:300; letter-spacing:0.05em;
+  text-align:center; white-space:pre-line; }
+
+/* ================= Works の同階層カード ================= */
+.wgrid { display:grid; gap:0.9rem; }
+.wcard { display:block; text-decoration:none; color:inherit; border:0.5px solid rgba(60,80,140,0.24);
+  background:rgba(247,248,251,0.93); padding:1.5rem 1.6rem;
+  transition:background 0.22s, border-color 0.22s, transform 0.22s; }
+.wcard:hover { background:rgba(220,225,240,0.45); border-color:rgba(60,80,140,0.5); transform:translateY(-2px); }
+.wcard-top { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
+.wcard-en { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:400; letter-spacing:0.14em; line-height:1.2; }
+.wcard-phrase { font-size:12px; letter-spacing:0.07em; color:#5a6a92; font-weight:300; margin-top:0.4rem; }
+.wcard-visual { display:flex; align-items:flex-end; gap:7px; margin-top:1rem; min-height:62px; }
+.wcard-visual img { display:block; border:0.5px solid rgba(60,80,140,0.22); }
+.wcard-visual img.cv { width:44px; }
+.wcard-visual img.sh { width:92px; height:60px; object-fit:cover; }
+.wcard-visual .ico { width:44px; height:44px; }
+.wcard-items { margin-top:0.9rem; padding-top:0.8rem; border-top:0.5px solid rgba(60,80,140,0.14);
+  font-size:11.5px; line-height:1.9; color:#7d8bab; font-weight:300; }
+
+/* ================= Station の Works コラージュ ================= */
+.collage { display:block; text-decoration:none; color:inherit; border:0.5px solid rgba(60,80,140,0.3);
+  background:rgba(247,248,251,0.93); padding:1.6rem 1.7rem 1.5rem; overflow:hidden;
+  transition:background 0.22s, border-color 0.22s, transform 0.22s; }
+.collage:hover { background:rgba(220,225,240,0.45); border-color:rgba(60,80,140,0.5); transform:translateY(-2px); }
+.collage-strip { display:flex; align-items:center; justify-content:center; margin:0.4rem 0 1.2rem; height:104px; }
+.collage-strip > * { flex-shrink:0; margin-left:-13px; transform:rotate(var(--r,0deg));
+  transition:transform 0.3s; filter:drop-shadow(0 1px 5px rgba(60,80,140,0.16)); }
+.collage-strip > *:first-child { margin-left:0; }
+.collage:hover .collage-strip > * { transform:rotate(calc(var(--r,0deg) * 1.9)); }
+.collage-strip img { display:block; border:0.5px solid rgba(60,80,140,0.24); background:#eef1f8; }
+.collage-strip img.cv { width:52px; }
+.collage-strip img.sh { width:78px; height:52px; object-fit:cover; }
+.collage-strip .plate { width:50px; height:50px; display:flex; align-items:center; justify-content:center;
+  border:0.5px solid rgba(60,80,140,0.24); background:rgba(238,241,248,0.95); }
+.collage-strip .plate .ico { width:30px; height:30px; }
+.collage-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
+
+@media (max-width:640px) {
+  .wcard { padding:1.3rem 1.2rem; }
+  .wcard-visual img.sh { width:80px; height:52px; }
+  .wcard-visual img.cv { width:40px; }
+  .collage { padding:1.3rem 1.1rem 1.2rem; }
+  .collage-strip { height:88px; }
+  .collage-strip > * { margin-left:-15px; }
+  .collage-strip img.cv { width:44px; }
+  .collage-strip img.sh { width:66px; height:44px; }
+  .collage-strip .plate { width:42px; height:42px; }
+  .collage-strip .plate .ico { width:25px; height:25px; }
+  .whisper-wrap { padding:1.3rem 1rem; }
+}
+
+.wcard-visual .wplate { width:92px; height:60px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  border:0.5px solid rgba(60,80,140,0.22); background:rgba(238,241,248,0.7); }
+.wcard-visual .wplate .ico { width:38px; height:38px; }
+@media (max-width:640px) { .wcard-visual .wplate { width:80px; height:52px; } .wcard-visual .wplate .ico { width:33px; height:33px; } }
