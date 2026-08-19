@@ -11,7 +11,7 @@ def esc(t): return html.escape(t, quote=True)
 # 全ページ共通の索引（母港からすべての桟橋が見える）
 NAV = [
   ("",         "Station", "母港"),
-  ("column/",  "Column",  "コラム"),
+  ("#column",  "Column",  "コラム"),
   ("works/",   "Works",   "作品"),
   ("contact/", "Contact", "連絡"),
 ]
@@ -350,7 +350,6 @@ def build():
     # ============================================================ Station
     b = ['  <div class="wh">\n'
          '    <h1 class="wh-title"><span class="wh-jp">吾妻大夢</span><span class="wh-en">Station</span></h1>\n'
-         '    <p class="wh-sub">Hiromu Azuma — Home Port</p>\n'
          '    <div class="wh-lead">\n      <p class="wh-lead-p">%s</p>\n'
          '      <div class="wh-rule"></div>\n      <p class="wh-bio">%s</p>\n    </div>\n  </div>'
          % (esc(C.LEAD), esc(C.BIO))]
@@ -398,18 +397,12 @@ def build():
         {"@type":"WebSite","@id":C.SITE_ROOT+"#site","url":C.SITE_ROOT,"name":"吾妻大夢 Station",
          "inLanguage":"ja","author":{"@id":AUTHOR_ID}}]})))
 
-    # ============================================================ Column
-    rows = "\n".join(col_row("%s/" % slug, jp, lede, icon=slug) for slug, jp, en, lede, _ in C.COLUMN)
-    b = [crumbs(1, [(None,"Column")]), ph("Column", "コラム", P["column"]),
-         '  <div class="col-list reveal">\n%s\n  </div>' % rows]
-    made.append(("column/index.html", page(1, "column/", "Column｜吾妻大夢 Station",
-      "吾妻大夢のコラム。天使、触診、接続。", "\n".join(b), "column/", back="../")))
-
+    # ============================================================ Column（各記事のみ。索引ページは置かない）
     for slug, jp, en, lede, text in C.COLUMN:
         snippet = text.replace("\n","").replace("　","")[:95] + "…"
-        b = [crumbs(2, [("../","Column"), (None, jp)]), ph(jp, en, lede), paras(text, "prose")]
+        b = [crumbs(2, [(None, jp)]), ph(jp, en, lede), paras(text, "prose")]
         made.append(("column/%s/index.html" % slug, page(2, "column/%s/" % slug,
-          "%s｜Column｜吾妻大夢 Station" % jp, snippet, "\n".join(b), "column/",
+          jp, snippet, "\n".join(b), "#column", back="../../",
           ogtitle="%s — %s" % (jp, lede),
           jsonld={"@context":"https://schema.org","@type":"Article","headline":jp,
                   "alternativeHeadline":en,"description":lede,"inLanguage":"ja",
