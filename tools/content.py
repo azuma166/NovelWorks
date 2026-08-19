@@ -48,7 +48,8 @@ COLUMN = [
 ]
 
 # ---------------------------------------------------------------- For You
-FOR_YOU = """絶望にひたされていても、どこかにはずみはあるはずで
+FOR_YOU = """絶望にひたされていても、
+どこかにはずみはあるはずで
 幸福であったとしても、影は強くのびている
 ゆえに、あなたが触れたなら
 それは誰かの祝福になる"""
@@ -323,7 +324,7 @@ System / 効力 / crystal / 天使 / おわる
 # ---------------------------------------------------------------- Theater / App
 THEATER = dict(
   title="デジカ", company="京田辺、演劇ないん会", note="第16回本公演",
-  url="https://youtu.be/apzKsVuA1qc", channel="https://www.youtube.com/@kyotana_engeki9")
+  url="https://youtu.be/apzKsVuA1qc", credit="脚本/演出：吾妻")
 
 APP = dict(
   title="接鳴", reading="せつめい", sub="電子焚火", url="https://contronica.netlify.app/",
@@ -338,9 +339,13 @@ APP = dict(
 
 
 # ---------------------------------------------------------------- 見出しに添える文
+BOOKS_LEAD = """現実は僕たちを侵食して、いつからか空想は限られたものになってしまった。
+でも確かに、生きた軌跡には物語が残る。
+ならば物語によって、軌跡を再現できるだろう。空にうつつを描け。"""
+
 PHRASE = {
   "now":     "息づいて、また先へ",
-  "column":  "想いはどこかにふれるだろうか",
+  "column":  "想いはどこかに溢れるだろうか",
   "links":   "それなりの生活",
   "works":   "残り続けるものたちのために",
   "for_you": "",
@@ -389,8 +394,8 @@ TANKA_WORKS = [
 
 # ---------------------------------------------------------------- App 一覧
 APPS = [
-  dict(title="接鳴（電子焚火）", url=APP["url"], desc=APP["lede"], thumb="thumb-setsumei.webp"),
-  dict(title="CroqKey", url="https://azuma166.github.io/CroqKey/",
-       desc="タップとフリックだけで操作するブラウザゲーム。プロトタイプ公開中。",
-       thumb="thumb-croqkey.webp"),
+  dict(title="接鳴 -電子焚火-", url=APP["url"], thumb="thumb-setsumei.webp",
+       desc="ノードを置き、繋ぎ、音と光が生まれる。ひとりで、あるいはあの人と。"),
+  dict(title="CroqKey", url="https://azuma166.github.io/CroqKey/", thumb="thumb-croqkey.webp",
+       desc="フリック操作で、解錠&移動の気楽なゲーム。\n要素はどんどん増えていく。目指せエンドレスモード。"),
 ]

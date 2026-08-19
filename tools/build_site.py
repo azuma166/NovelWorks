@@ -37,7 +37,7 @@ def site_index(depth, here):
     return ('<nav class="site-index">\n  <div class="si-label">STATION</div>\n'
             '  <div class="si-list">\n    %s\n  </div>\n</nav>' % "\n    ".join(items))
 
-def page(depth, path, title, desc, body, here, jsonld=None, ogtitle=None):
+def page(depth, path, title, desc, body, here, jsonld=None, ogtitle=None, back=None):
     u   = up(depth)
     url = C.SITE_ROOT + path
     ld  = ('\n<script type="application/ld+json">\n%s\n</script>'
@@ -126,8 +126,13 @@ def page(depth, path, title, desc, body, here, jsonld=None, ogtitle=None):
 </body>
 </html>
 """
+    if back is None and depth > 0:
+        back = "../"          # どのページも「ひとつ上」へ戻る
+    backhtml = ('  <div class="back-wrap"><a class="backlink" href="%s" aria-label="ひとつ上へ戻る" title="戻る">←</a></div>'
+                % back) if back else ""
     vals = dict(TITLE=esc(title), DESC=esc(desc), URL=url, U=u, ROOT=C.SITE_ROOT, BG=BG,
-                BODY=body, INDEX=site_index(depth, here), LD=ld, FAV=fav,
+                BODY=body + ("\n" + backhtml if backhtml else ""),
+                INDEX=site_index(depth, here), LD=ld, FAV=fav,
                 OGTITLE=esc(ogtitle or title))
     for k, v in vals.items():
         tmpl = tmpl.replace("@@" + k + "@@", v)
@@ -294,14 +299,16 @@ def mini(href, title, desc, external=False, icon=None, thumb=None, depth=1):
             '<span class="mini-desc">%s</span><span class="mini-arrow">%s</span></a>'
             % (href, tgt, vis, esc(title), esc(desc), "↗" if external else "→"))
 
-def wcard(href, en, phrase, visual, items, external=False):
+def wcard(href, en, phrase, visual, items, external=False, major=False, lead=None):
     tgt = ' target="_blank" rel="noopener"' if external else ""
-    return ('      <a class="wcard" href="%s"%s>\n'
+    ld = '\n        <div class="wcard-lead">%s</div>' % esc(lead) if lead else ""
+    return ('      <a class="wcard%s" href="%s"%s>\n'
             '        <div class="wcard-top"><span class="wcard-en">%s</span><span class="hub-arrow">%s</span></div>\n'
             '        <div class="wcard-phrase">%s</div>\n'
-            '        <div class="wcard-visual">%s</div>\n'
+            '        <div class="wcard-visual">%s</div>%s\n'
             '        <div class="wcard-items">%s</div>\n      </a>'
-            % (href, tgt, esc(en), "↗" if external else "→", esc(phrase), visual, items))
+            % (" wcard-major" if major else "", href, tgt, esc(en), "↗" if external else "→",
+               esc(phrase), visual, ld, items))
 
 def cv(asin, depth=1):  return '<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % asin)
 def sh(name, depth=1):  return '<img class="sh" src="%sassets/%s" alt="" loading="lazy">' % (up(depth), name)
@@ -365,7 +372,7 @@ def build():
     b = [crumbs(1, [(None,"Column")]), ph("Column", "コラム", P["column"]),
          '  <div class="col-list reveal">\n%s\n  </div>' % rows]
     made.append(("column/index.html", page(1, "column/", "Column｜吾妻大夢 Station",
-      "吾妻大夢のコラム。天使、触診、接続。", "\n".join(b), "column/")))
+      "吾妻大夢のコラム。天使、触診、接続。", "\n".join(b), "column/", back="../")))
 
     for slug, jp, en, lede, text in C.COLUMN:
         snippet = text.replace("\n","").replace("　","")[:95] + "…"
@@ -381,13 +388,14 @@ def build():
     cards = [
       wcard("books/", "Books", P["books"],
             "".join(cv(a) for a in ["B0HFNHM1B7","B0B12RN7ZN","B0BWT14YM1","B0C576Q4CT","B0FPCZ39NC","B0GFWDKKJY","B0F9VCQNRV"]),
-            "小説・詩集・エッセイ 13冊 — ゆいめ／みぎうで／灯花／絵喰い／Debris／錆びた平方／shuffle／shape／パラレルの耐用／Meltopia／浸水地帯／Key"),
+            "小説・詩集・エッセイ 13冊 — ゆいめ／みぎうで／灯花／絵喰い／Debris／錆びた平方／shuffle／shape／パラレルの耐用／Meltopia／浸水地帯／Key",
+            major=True, lead=C.BOOKS_LEAD),
       wcard("poem/", "Poem", P["poem"], '<span class="wplate">%s</span>' % ICONS["poem"], "空力の考察 — 詩的掌編。全文を掲載。"),
       wcard("tanka/", "Tanka", P["tanka"], '<span class="wplate">%s</span>' % ICONS["tanka"], "ディクショナリ／戯画 — 二十五首の連作、二作。"),
       wcard("theater/", "Theater", P["theater"], sh("thumb-dejika.webp"),
-            "デジカ — 京田辺、演劇ないん会 第16回本公演。"),
+            "デジカ — 京田辺、演劇ないん会 第16回本公演。脚本/演出：吾妻"),
       wcard("app/", "App", P["app"], sh("thumb-setsumei.webp") + sh("thumb-croqkey.webp"),
-            "接鳴（電子焚火）／CroqKey"),
+            "接鳴 -電子焚火- ／ CroqKey"),
     ]
     b = [crumbs(1, [(None,"Works")]), ph("Works", "作品", P["works"]),
          '  <div class="wgrid reveal">\n%s\n  </div>' % "\n".join(cards)]
@@ -458,42 +466,30 @@ def build():
          '      <div class="cover-wrap"><img src="../../assets/thumb-dejika.webp" alt="%s" loading="lazy" style="width:150px"></div>\n'
          '      <div class="solo-body">\n'
          '        <div class="c-tag">Theater · %s</div><h2 class="c-title">%s</h2>\n'
-         '        <div class="c-div"></div>\n        <p class="c-desc">%s %s。</p>\n'
-         '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">本編を観る</a>'
-         '<a class="c-link" href="%s" target="_blank" rel="noopener">劇団チャンネル</a></div>\n'
+         '        <div class="c-div"></div>\n        <p class="c-desc">%s %s。\n\n%s</p>\n'
+         '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">本編を観る</a></div>\n'
          '      </div>\n    </div>\n  </div>'
          % (esc(t["title"]), esc(t["note"]), esc(t["title"]), esc(t["company"]), esc(t["note"]),
-            t["url"], t["channel"])]
+            esc(t["credit"]), t["url"])]
     made.append(("works/theater/index.html", page(2, "works/theater/", "デジカ｜Theater｜吾妻大夢 Station",
-      "『デジカ』京田辺、演劇ないん会 第16回本公演。本編映像を公開中。", "\n".join(b), "works/",
-      ogtitle="デジカ — %s" % P["theater"])))
+      "『デジカ』京田辺、演劇ないん会 第16回本公演。脚本/演出：吾妻。本編映像を公開中。", "\n".join(b), "works/",
+      ogtitle="デジカ — %s" % P["theater"], back="../")))
 
     # ============================================================ App
-    a = C.APP
-    pts = "\n".join('      <p>%s</p>' % esc(x) for x in a["points"])
     b = [crumbs(2, [("../","Works"), (None,"App")]), ph("App", "アプリ", P["app"])]
-    b.append('  <div class="solo-wrap reveal">\n    <div class="solo-card">\n'
-        '      <div class="cover-wrap"><img src="../../assets/thumb-setsumei.webp" alt="接鳴" loading="lazy" style="width:150px"></div>\n'
-        '      <div class="solo-body">\n        <div class="c-tag">App · Instrument</div>'
-        '<h2 class="c-title">接鳴（%s）</h2>\n        <div class="c-div"></div>\n'
-        '        <p class="c-desc">%s</p>\n'
-        '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">ひらく</a></div>\n'
-        '      </div>\n    </div>\n  </div>' % (esc(a["reading"]), esc(a["lede"]), a["url"]))
-    b.append('  <div class="readpanel reveal">\n    <p class="pull">%s</p>\n'
-             '    <div class="prose-end"></div>\n'
-             '    <div class="prose" style="margin-top:2.2rem">\n%s\n    </div>\n  </div>'
-             % (esc(a["principle"]), pts))
-    ck = C.APPS[1]
-    b.append('  <div class="solo-wrap reveal" style="margin-top:1.6rem">\n    <div class="solo-card">\n'
-        '      <div class="cover-wrap"><img src="../../assets/thumb-croqkey.webp" alt="CroqKey" loading="lazy" style="width:150px"></div>\n'
-        '      <div class="solo-body">\n        <div class="c-tag">App · Game</div>'
-        '<h2 class="c-title">CroqKey</h2>\n        <div class="c-div"></div>\n'
-        '        <p class="c-desc">%s</p>\n'
-        '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">あそぶ</a></div>\n'
-        '      </div>\n    </div>\n  </div>' % (esc(ck["desc"]), ck["url"]))
+    for i, a in enumerate(C.APPS):
+        b.append('  <div class="solo-wrap reveal"%s>\n    <div class="solo-card">\n'
+            '      <div class="cover-wrap"><img src="../../assets/%s" alt="%s" loading="lazy" style="width:150px"></div>\n'
+            '      <div class="solo-body">\n        <div class="c-tag">App</div>'
+            '<h2 class="c-title">%s</h2>\n        <div class="c-div"></div>\n'
+            '        <p class="c-desc">%s</p>\n'
+            '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">ひらく</a></div>\n'
+            '      </div>\n    </div>\n  </div>'
+            % (' style="margin-top:1.6rem"' if i else "", a["thumb"], esc(a["title"]),
+               esc(a["title"]), esc(a["desc"]), a["url"]))
     made.append(("works/app/index.html", page(2, "works/app/", "App｜吾妻大夢 Station",
-      "接鳴（電子焚火）と CroqKey。吾妻大夢のアプリケーション。", "\n".join(b), "works/",
-      ogtitle="App — %s" % P["app"])))
+      "接鳴 -電子焚火- と CroqKey。吾妻大夢のアプリケーション。", "\n".join(b), "works/",
+      ogtitle="App — %s" % P["app"], back="../")))
 
     # ============================================================ Contact
     b = [crumbs(1, [(None,"Contact")]), ph("Contact", "連絡", "ご感想、ご依頼、なんでもどうぞ。"),
