@@ -463,3 +463,34 @@ body {
   .wcard-major .wcard-visual img.cv { width:42px; }
   .wcard-lead { font-size:13px; line-height:2.15; }
 }
+
+/* ================= 短歌: 一首を一行に収める（最長31字） ================= */
+.tanka-set { max-width:none; }
+.tanka { white-space:nowrap; letter-spacing:0.03em; font-size:min(15px, calc((100vw - 28px) / 32.5)); }
+@media (max-width:640px) {
+  .tanka { font-size:calc((100vw - 28px) / 32.5); line-height:2.5; }
+  .readpanel.tanka-panel { margin-left:-1.15rem; margin-right:-1.15rem; padding-left:9px; padding-right:9px; }
+}
+
+/* ================= Works カードの図版をスマホで折り返す ================= */
+.wcard-visual { flex-wrap:wrap; }
+
+/* ================= Case（連作詩） ================= */
+.case-part { display:flex; align-items:center; gap:0.9rem; margin:3.4rem 0 2.4rem; }
+.case-part:first-child { margin-top:0.4rem; }
+.case-part::before, .case-part::after { content:''; flex:1; height:0.5px; background:rgba(60,80,140,0.22); }
+.case-part span { font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:0.28em;
+  text-indent:0.28em; color:#7d8bab; white-space:nowrap; }
+.verse { margin-bottom:2.9rem; }
+.verse:last-child { margin-bottom:0; }
+.verse-title { font-size:15px; letter-spacing:0.16em; text-indent:0.16em; color:#1a1a2e; font-weight:400;
+  text-align:center; margin-bottom:1.1rem; }
+.verse-body { max-width:27em; margin:0 auto; }
+.verse-line { font-size:13.5px; line-height:2.2; color:#26304a; font-weight:300; letter-spacing:0.04em; }
+.verse-gap { height:1.1em; }
+@media (max-width:640px) {
+  .verse-body { max-width:none; }
+  .verse-line { font-size:14px; line-height:2.15; }
+  .verse-title { font-size:15.5px; }
+  .case-part { margin:2.8rem 0 2rem; }
+}

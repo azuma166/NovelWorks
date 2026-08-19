@@ -324,7 +324,10 @@ System / 効力 / crystal / 天使 / おわる
 # ---------------------------------------------------------------- Theater / App
 THEATER = dict(
   title="デジカ", company="京田辺、演劇ないん会", note="第16回本公演",
-  url="https://youtu.be/apzKsVuA1qc", credit="脚本/演出：吾妻")
+  url="https://youtu.be/apzKsVuA1qc", credit="脚本/演出：吾妻",
+  blurb="""果てなく生まれるアンドロイド
+不良品は廃棄です
+ここは豊かな廃棄場...""")
 
 APP = dict(
   title="接鳴", reading="せつめい", sub="電子焚火", url="https://contronica.netlify.app/",
@@ -339,9 +342,12 @@ APP = dict(
 
 
 # ---------------------------------------------------------------- 見出しに添える文
-BOOKS_LEAD = """現実は僕たちを侵食して、いつからか空想は限られたものになってしまった。
+BOOKS_LEAD = """現実は僕たちを侵食して、
+空想は限られてしまう。
 でも確かに、生きた軌跡には物語が残る。
-ならば物語によって、軌跡を再現できるだろう。空にうつつを描け。"""
+
+ならば、
+空にうつつを描け。"""
 
 PHRASE = {
   "now":     "息づいて、また先へ",
@@ -397,5 +403,16 @@ APPS = [
   dict(title="接鳴 -電子焚火-", url=APP["url"], thumb="thumb-setsumei.webp",
        desc="ノードを置き、繋ぎ、音と光が生まれる。ひとりで、あるいはあの人と。"),
   dict(title="CroqKey", url="https://azuma166.github.io/CroqKey/", thumb="thumb-croqkey.webp",
-       desc="フリック操作で、解錠&移動の気楽なゲーム。\n要素はどんどん増えていく。目指せエンドレスモード。"),
+       desc="フリック操作で移動&解錠。たまには気楽なゲームを。\n目指せエンドレスモード。"),
+]
+
+
+# ---------------------------------------------------------------- 詩 2作目
+from case_text import CASE
+
+POEM_WORKS = [
+  dict(slug="kuuriki", title=POEM_TITLE, kind="prose", text=POEM, asin=POEM_ASIN,
+       note="感慨を織り重ねて描写する詩的掌編。全文を掲載。"),
+  dict(slug="case",    title="Case",     kind="case",  text=CASE, asin=None,
+       note="三つの Case にわたる二十二篇。全文を掲載。"),
 ]

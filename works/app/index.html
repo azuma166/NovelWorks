@@ -98,8 +98,8 @@
       <div class="solo-body">
         <div class="c-tag">App</div><h2 class="c-title">CroqKey</h2>
         <div class="c-div"></div>
-        <p class="c-desc">フリック操作で、解錠&amp;移動の気楽なゲーム。
-要素はどんどん増えていく。目指せエンドレスモード。</p>
+        <p class="c-desc">フリック操作で移動&amp;解錠。たまには気楽なゲームを。
+目指せエンドレスモード。</p>
         <div class="c-links"><a class="c-link" href="https://azuma166.github.io/CroqKey/" target="_blank" rel="noopener">ひらく</a></div>
       </div>
     </div>
@@ -142,7 +142,7 @@
   } else {
     var io=new IntersectionObserver(function(es){
       es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, {rootMargin:'0px 0px -6% 0px', threshold:0.05});
+    }, {rootMargin:'0px 0px -6% 0px', threshold:0});
     for(var j=0;j<els.length;j++) io.observe(els[j]);
   }
 })();

@@ -87,8 +87,10 @@
       <div class="solo-body">
         <div class="c-tag">Theater · 第16回本公演</div><h2 class="c-title">デジカ</h2>
         <div class="c-div"></div>
+        <p class="c-desc">果てなく生まれるアンドロイド
+不良品は廃棄です
+ここは豊かな廃棄場...</p>
         <p class="c-desc">京田辺、演劇ないん会 第16回本公演。
-
 脚本/演出：吾妻</p>
         <div class="c-links"><a class="c-link" href="https://youtu.be/apzKsVuA1qc" target="_blank" rel="noopener">本編を観る</a></div>
       </div>
@@ -132,7 +134,7 @@
   } else {
     var io=new IntersectionObserver(function(es){
       es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, {rootMargin:'0px 0px -6% 0px', threshold:0.05});
+    }, {rootMargin:'0px 0px -6% 0px', threshold:0});
     for(var j=0;j<els.length;j++) io.observe(els[j]);
   }
 })();

@@ -106,7 +106,7 @@
     <span class="ph-jp">Tanka</span>
     <p class="ph-lead">漂えば隙間が埋まる</p>
   </div>
-  <div class="readpanel reveal">
+  <div class="readpanel tanka-panel reveal">
     <div class="tanka-set">
       <div class="tanka-group">
         <div class="tanka">海のため貝に構図の名を示せ東のサイン西の回遊</div>
@@ -184,7 +184,7 @@
   } else {
     var io=new IntersectionObserver(function(es){
       es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, {rootMargin:'0px 0px -6% 0px', threshold:0.05});
+    }, {rootMargin:'0px 0px -6% 0px', threshold:0});
     for(var j=0;j<els.length;j++) io.observe(els[j]);
   }
 })();

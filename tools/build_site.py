@@ -118,7 +118,7 @@ def page(depth, path, title, desc, body, here, jsonld=None, ogtitle=None, back=N
   } else {
     var io=new IntersectionObserver(function(es){
       es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, {rootMargin:'0px 0px -6% 0px', threshold:0.05});
+    }, {rootMargin:'0px 0px -6% 0px', threshold:0});
     for(var j=0;j<els.length;j++) io.observe(els[j]);
   }
 })();
@@ -204,6 +204,34 @@ def ph(en, jp, lead=None):
     l = '\n    <p class="ph-lead">%s</p>' % esc(lead) if lead else ""
     return ('  <div class="ph reveal">\n    <span class="ph-en">%s</span>\n'
             '    <span class="ph-jp">%s</span>%s\n  </div>' % (esc(en), esc(jp), l))
+
+def case_body(text):
+    """[Case:xxx] を部、《題》を詩題、詩の途中の空行だけを連の切れ目として組む。"""
+    out, open_verse, has_line, pending_gap = [], False, False, False
+    def close():
+        if open_verse: out.append('    </div>\n  </div>')
+    for raw in text.split("\n"):
+        st = raw.strip()
+        if st.startswith("[Case:"):
+            close(); open_verse = has_line = pending_gap = False
+            out.append('  <div class="case-part"><span>%s</span></div>'
+                       % esc(st.strip("[]").replace(":", " : ")))
+        elif st.startswith("《") and st.endswith("》"):
+            close()
+            out.append('  <div class="verse">\n    <h2 class="verse-title">%s</h2>\n    <div class="verse-body">'
+                       % esc(st[1:-1]))
+            open_verse, has_line, pending_gap = True, False, False
+        elif not st:
+            if open_verse and has_line:
+                pending_gap = True          # 本文が続く場合だけ連の切れ目にする
+        else:
+            if pending_gap:
+                out.append('      <div class="verse-gap"></div>')
+                pending_gap = False
+            out.append('      <p class="verse-line">%s</p>' % esc(st))
+            has_line = True
+    close()
+    return '  <div class="readpanel reveal">\n%s\n  </div>' % "\n".join("  "+o for o in out)
 
 def paras(text, cls="prose"):
     out = []
@@ -421,16 +449,28 @@ def build():
       jsonld={"@context":"https://schema.org","@type":"ItemList","name":"吾妻大夢 作品一覧",
               "itemListElement":books_ld})))
 
-    # ============================================================ Poem
-    b = [crumbs(2, [("../","Works"), (None,"Poem")]),
-         ph(C.POEM_TITLE, "Poem", P["poem"]), paras(C.POEM, "poem"),
-         '  <div class="linkrow reveal" style="justify-content:center;margin-top:2.2rem">'
-         '<a class="ext" href="%s" target="_blank" rel="noopener">Kindle版</a></div>' % (AMZ % C.POEM_ASIN)]
-    made.append(("works/poem/index.html", page(2, "works/poem/", "空力の考察｜Poem｜吾妻大夢 Station",
-      "吾妻大夢の詩的掌編『空力の考察』全文。", "\n".join(b), "works/",
-      ogtitle="空力の考察 — %s" % P["poem"],
-      jsonld={"@context":"https://schema.org","@type":"CreativeWork","name":C.POEM_TITLE,
-              "genre":"詩","inLanguage":"ja","author":PERSON})))
+    # ============================================================ Poem（索引）
+    minis = "\n".join(mini("%s/" % w["slug"], w["title"], w["note"], icon="poem", depth=2)
+                      for w in C.POEM_WORKS)
+    b = [crumbs(2, [("../","Works"), (None,"Poem")]), ph("Poem", "詩", P["poem"]),
+         '  <div class="reveal">\n%s\n  </div>' % minis]
+    made.append(("works/poem/index.html", page(2, "works/poem/", "Poem｜吾妻大夢 Station",
+      "吾妻大夢の詩。空力の考察、Case。", "\n".join(b), "works/",
+      ogtitle="Poem — %s" % P["poem"])))
+
+    for w in C.POEM_WORKS:
+        body = case_body(w["text"]) if w["kind"] == "case" else paras(w["text"], "poem")
+        b = [crumbs(3, [("../../","Works"), ("../","Poem"), (None, w["title"])]),
+             ph(w["title"], "Poem", P["poem"]), body]
+        if w["asin"]:
+            b.append('  <div class="linkrow reveal" style="justify-content:center;margin-top:2.2rem">'
+                     '<a class="ext" href="%s" target="_blank" rel="noopener">Kindle版</a></div>' % (AMZ % w["asin"]))
+        made.append(("works/poem/%s/index.html" % w["slug"], page(3, "works/poem/%s/" % w["slug"],
+          "%s｜Poem｜吾妻大夢 Station" % w["title"],
+          "吾妻大夢の詩『%s』全文。" % w["title"], "\n".join(b), "works/",
+          ogtitle="%s — %s" % (w["title"], P["poem"]),
+          jsonld={"@context":"https://schema.org","@type":"CreativeWork","name":w["title"],
+                  "genre":"詩","inLanguage":"ja","author":PERSON})))
 
     # ============================================================ Tanka
     minis = "\n".join(mini("%s/" % w["slug"], w["title"], w["note"], icon="tanka", depth=2)
@@ -451,7 +491,7 @@ def build():
         n = sum(len(g.split("\n")) for g in groups)
         b = [crumbs(3, [("../../","Works"), ("../","Tanka"), (None, w["title"])]),
              ph(w["title"], "Tanka", P["tanka"]),
-             '  <div class="readpanel reveal">\n    <div class="tanka-set">\n%s\n    </div>\n  </div>' % "\n".join(inner)]
+             '  <div class="readpanel tanka-panel reveal">\n    <div class="tanka-set">\n%s\n    </div>\n  </div>' % "\n".join(inner)]
         made.append(("works/tanka/%s/index.html" % w["slug"], page(3, "works/tanka/%s/" % w["slug"],
           "%s｜Tanka｜吾妻大夢 Station" % w["title"],
           "吾妻大夢の短歌連作『%s』%d首。" % (w["title"], n), "\n".join(b), "works/",
@@ -466,11 +506,12 @@ def build():
          '      <div class="cover-wrap"><img src="../../assets/thumb-dejika.webp" alt="%s" loading="lazy" style="width:150px"></div>\n'
          '      <div class="solo-body">\n'
          '        <div class="c-tag">Theater · %s</div><h2 class="c-title">%s</h2>\n'
-         '        <div class="c-div"></div>\n        <p class="c-desc">%s %s。\n\n%s</p>\n'
+         '        <div class="c-div"></div>\n        <p class="c-desc">%s</p>\n'
+         '        <p class="c-desc">%s %s。\n%s</p>\n'
          '        <div class="c-links"><a class="c-link" href="%s" target="_blank" rel="noopener">本編を観る</a></div>\n'
          '      </div>\n    </div>\n  </div>'
-         % (esc(t["title"]), esc(t["note"]), esc(t["title"]), esc(t["company"]), esc(t["note"]),
-            esc(t["credit"]), t["url"])]
+         % (esc(t["title"]), esc(t["note"]), esc(t["title"]), esc(t["blurb"]),
+            esc(t["company"]), esc(t["note"]), esc(t["credit"]), t["url"])]
     made.append(("works/theater/index.html", page(2, "works/theater/", "デジカ｜Theater｜吾妻大夢 Station",
       "『デジカ』京田辺、演劇ないん会 第16回本公演。脚本/演出：吾妻。本編映像を公開中。", "\n".join(b), "works/",
       ogtitle="デジカ — %s" % P["theater"], back="../")))
