@@ -418,7 +418,7 @@ def build():
                            ("B0GFWDKKJY","-4deg"),("B0F9VCQNRV","3deg")]),
             "小説・詩集・エッセイ 13冊 — ゆいめ／みぎうで／灯花／絵喰い／Debris／錆びた平方／shuffle／shape／パラレルの耐用／Meltopia／浸水地帯／Key",
             major=True, lead=C.BOOKS_LEAD),
-      wcard("poem/", "Poem", P["poem"], '<span class="wplate">%s</span>' % ICONS["poem"], "空力の考察 — 詩的掌編。全文を掲載。"),
+      wcard("poem/", "Poem", P["poem"], '<span class="wplate">%s</span>' % ICONS["poem"], "空力の考察／Case — 詩的掌編と連作、二作。"),
       wcard("tanka/", "Tanka", P["tanka"], '<span class="wplate">%s</span>' % ICONS["tanka"], "ディクショナリ／戯画 — 二十五首の連作、二作。"),
       wcard("theater/", "Theater", P["theater"], sh("thumb-dejika.webp"),
             "デジカ — 京田辺、演劇ないん会 第16回本公演。脚本/演出：吾妻"),
