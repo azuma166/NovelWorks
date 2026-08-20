@@ -329,7 +329,7 @@ THEATER = dict(
   url="https://youtu.be/apzKsVuA1qc", credit="脚本/演出：吾妻",
   blurb="""果てなく生まれるアンドロイド
 不良品は廃棄です
-ここは豊かな廃棄場...""")
+ここは豊かな廃棄場……""")
 
 APP = dict(
   title="接鳴", reading="せつめい", sub="電子焚火", url="https://contronica.netlify.app/",
