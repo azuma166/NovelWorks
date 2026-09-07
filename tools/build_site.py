@@ -330,6 +330,21 @@ def mini(href, title, desc, external=False, icon=None, thumb=None, depth=1):
             '<span class="mini-desc">%s</span><span class="mini-arrow">%s</span></a>'
             % (href, tgt, vis, esc(title), esc(desc), "↗" if external else "→"))
 
+def now_card(b):
+    links = []
+    if b.get("kindle"): links.append('<a class="c-link" href="%s" target="_blank" rel="noopener">Kindle</a>' % (AMZ % b["kindle"]))
+    if b.get("paper"):  links.append('<a class="c-link" href="%s" target="_blank" rel="noopener">Paperback</a>' % (AMZ % b["paper"]))
+    return ('        <div class="set-card">\n'
+            '          <div class="now-head"><span class="new-badge">New</span><span class="new-date">%s</span></div>\n'
+            '          <div class="card-inner">\n'
+            '            <div class="cover-sm"><img src="%s" alt="%s" loading="lazy"></div>\n'
+            '            <div class="card-body"><div class="c-tag">%s</div><h2 class="c-title">%s</h2></div>\n'
+            '          </div>\n          <div class="c-div"></div>\n'
+            '          <p class="c-desc">%s</p>\n'
+            '          <div class="c-links">%s</div>\n        </div>'
+            % (esc(b["date"]), COVER % (b.get("cover") or b["asin"]), esc(b["title"]),
+               esc(b["tag"]), esc(b["title"]), esc(b["desc"]), "".join(links)))
+
 def wcard(href, en, phrase, visual, items, external=False, major=False, lead=None):
     tgt = ' target="_blank" rel="noopener"' if external else ""
     ld = '\n        <div class="wcard-lead">%s</div>' % esc(lead) if lead else ""
@@ -344,6 +359,10 @@ def wcard(href, en, phrase, visual, items, external=False, major=False, lead=Non
 def cv(asin, depth=1):  return '<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % asin)
 def sh(name, depth=1):  return '<img class="sh" src="%sassets/%s" alt="" loading="lazy">' % (up(depth), name)
 
+BOOK_TITLES = ([C.HARI["title"], C.YUIME["title"]]
+             + [c["title"] for st in C.SETS for c in st[3]]
+             + [C.MELTOPIA["title"], C.SHINSUI["title"], C.KEY["title"]])
+
 def build():
     made = []
 
@@ -354,7 +373,9 @@ def build():
          '      <div class="wh-rule"></div>\n      <p class="wh-bio">%s</p>\n    </div>\n  </div>'
          % (esc(C.LEAD), esc(C.BIO))]
 
-    b.append(sect("Now", P["now"], solo_card(C.YUIME, badge=C.YUIME["date"]), anchor="now"))
+    b.append(sect("Now", P["now"],
+        '    <div class="set-wrap new-wrap now-grid reveal">\n      <div class="set-grid">\n%s\n      </div>\n    </div>'
+        % "\n".join(now_card(w) for w in C.NOW_WORKS), anchor="now"))
 
     rows = "\n".join(col_row("column/%s/" % slug, jp, lede, icon=slug)
                      for slug, jp, en, lede, _ in C.COLUMN)
@@ -365,7 +386,8 @@ def build():
 
     # Works — 色々な作品の要素をひとつのカードに
     bits = [
-      ('<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % "B0HFNHM1B7"), "-7deg"),
+      ('<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % "B0HJ2NC5XB"), "-7deg"),
+      ('<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % "B0HFNHM1B7"), "4deg"),
       ('<span class="plate">%s</span>' % ICONS["tanka"], "5deg"),
       ('<img class="cv" src="%s" alt="" loading="lazy">' % (COVER % "B0B12RN7ZN"), "-3deg"),
       ('<img class="sh" src="assets/thumb-dejika.webp" alt="" loading="lazy">', "4deg"),
@@ -413,10 +435,10 @@ def build():
       wcard("books/", "Books", P["books"],
             '<span class="jumble-mark"></span>' + "".join(
               '<span style="--r:%s"><img src="%s" alt="" loading="lazy"></span>' % (r, COVER % a)
-              for a, r in [("B0HFNHM1B7","-7deg"),("B0B12RN7ZN","5deg"),("B0B7Z1D5YD","-3deg"),
+              for a, r in [("B0HJ2NC5XB","-7deg"),("B0HFNHM1B7","5deg"),("B0B12RN7ZN","-3deg"),
                            ("B0BWT14YM1","4deg"),("B0C576Q4CT","-5deg"),("B0FPCZ39NC","6deg"),
                            ("B0GFWDKKJY","-4deg"),("B0F9VCQNRV","3deg")]),
-            "小説・詩集・エッセイ 13冊 — ゆいめ／みぎうで／灯花／絵喰い／Debris／錆びた平方／shuffle／shape／パラレルの耐用／Meltopia／浸水地帯／Key",
+            "小説・詩集・エッセイ %d冊 — %s" % (len(BOOK_TITLES), "／".join(BOOK_TITLES)),
             major=True, lead=C.BOOKS_LEAD),
       wcard("poem/", "Poem", P["poem"], '<span class="wplate">%s</span>' % ICONS["poem"], "空力の考察／Case — 詩的掌編と連作、二作。"),
       wcard("tanka/", "Tanka", P["tanka"], '<span class="wplate">%s</span>' % ICONS["tanka"], "ディクショナリ／戯画 — 二十五首の連作、二作。"),
@@ -431,7 +453,7 @@ def build():
       "吾妻大夢の作品。小説、詩、短歌、演劇、アプリケーション。", "\n".join(b), "works/")))
 
     # ============================================================ Books
-    shelf = [solo_card(C.YUIME, badge=C.YUIME["date"])]
+    shelf = [solo_card(C.HARI, badge=C.HARI["date"]), solo_card(C.YUIME)]
     shelf += [set_block(*st) for st in C.SETS]
     shelf.append(solo_card(C.MELTOPIA))
     shelf.append(solo_card(C.SHINSUI))
@@ -440,7 +462,7 @@ def build():
          ph("Books", "小説・詩集・エッセイ", P["books"]), "\n".join(shelf)]
     books_ld = [{"@type":"ListItem","position":i+1,"item":{"@type":"Book","name":n,"author":{"@id":AUTHOR_ID},
                  "inLanguage":"ja","url":AMZ % a}} for i,(n,a) in enumerate(
-                 [(C.YUIME["title"],C.YUIME["kindle"])] +
+                 [(C.HARI["title"],C.HARI["kindle"]), (C.YUIME["title"],C.YUIME["kindle"])] +
                  [(c["title"],c["asin"]) for st in C.SETS for c in st[3]] +
                  [(C.MELTOPIA["title"],C.MELTOPIA["asin"]),(C.SHINSUI["title"],C.SHINSUI["asin"]),(C.KEY["title"],C.KEY["asin"])])]
     made.append(("works/books/index.html", page(2, "works/books/", "Books｜吾妻大夢 Station",

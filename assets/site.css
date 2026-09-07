@@ -504,3 +504,7 @@ body {
   .wcard-visual.jumble > * { margin-left:-15px; }
   .wcard-visual.jumble img { width:44px; }
 }
+
+/* ================= Now: 最新作を並べる ================= */
+.now-head { display:flex; align-items:center; gap:0.75rem; margin-bottom:0.9rem; }
+.now-grid .set-card { gap:0.6rem; }

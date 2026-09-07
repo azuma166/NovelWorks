@@ -202,6 +202,19 @@ TANKA = """海のため貝に構図の名を示せ東のサイン西の回遊
 索引で人間賛歌を見つけてはひとりが裂ける私はどちら"""
 
 # ---------------------------------------------------------------- Now / Books
+HARI = dict(
+  title="針の蝶", tag="Novel · Fantasy", kindle="B0HJ2MWGY4", paper="B0HJ2NC5XB",
+  cover="B0HJ2NC5XB", date="2026.09.07", pages="137ページ",
+  desc="""思考が形質を決める世界。
+人々は頭上に球体を抱え、それを揺らさないよう訓練されて生きる。
+
+空から降る花、光を喰う翅、地下扉。安らかに蠢く世界で。
+球体の代わりに空隙を抱えた少年は、人に恋し、物に魅せられ、比喩を増大させていく。
+
+蝶、それはどこに？
+
+固定と流動のはざまを渡る、マジックリアリズム幻想小説。""")
+
 YUIME = dict(
   title="ゆいめ", tag="Novel · SF", kindle="B0HFMW4CX4", paper="B0HFNHM1B7",
   cover="B0HFNHM1B7", date="2026.08.18", pages="107ページ",
@@ -418,3 +431,6 @@ POEM_WORKS = [
   dict(slug="case",    title="Case",     kind="case",  text=CASE, asin=None,
        note="三つの Case にわたる二十二篇。全文を掲載。"),
 ]
+
+
+NOW_WORKS = [HARI, YUIME]
