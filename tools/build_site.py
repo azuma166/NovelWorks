@@ -444,7 +444,7 @@ def build():
       wcard("tanka/", "Tanka", P["tanka"], '<span class="wplate">%s</span>' % ICONS["tanka"], "／".join(w["title"] for w in C.TANKA_WORKS) + " — %d作。" % len(C.TANKA_WORKS)),
       wcard("theater/", "Theater", P["theater"], sh("thumb-dejika.webp"),
             "デジカ — 京田辺、演劇ないん会 第16回本公演。脚本/演出：吾妻"),
-      wcard("app/", "App", P["app"], sh("thumb-setsumei.webp") + sh("thumb-croqkey.webp"),
+      wcard("app/", "App", P["app"], "".join(sh(a["thumb"]) for a in C.APPS),
             "／".join(a["title"] for a in C.APPS)),
     ]
     b = [crumbs(1, [(None,"Works")]), ph("Works", "作品", P["works"]),
