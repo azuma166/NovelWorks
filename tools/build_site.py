@@ -440,12 +440,12 @@ def build():
                            ("B0GFWDKKJY","-4deg"),("B0F9VCQNRV","3deg")]),
             "小説・詩集・エッセイ %d冊 — %s" % (len(BOOK_TITLES), "／".join(BOOK_TITLES)),
             major=True, lead=C.BOOKS_LEAD),
-      wcard("poem/", "Poem", P["poem"], '<span class="wplate">%s</span>' % ICONS["poem"], "空力の考察／Case — 詩的掌編と連作、二作。"),
-      wcard("tanka/", "Tanka", P["tanka"], '<span class="wplate">%s</span>' % ICONS["tanka"], "ディクショナリ／戯画 — 二十五首の連作、二作。"),
+      wcard("poem/", "Poem", P["poem"], '<span class="wplate">%s</span>' % ICONS["poem"], "／".join(w["title"] for w in C.POEM_WORKS) + " — %d作。" % len(C.POEM_WORKS)),
+      wcard("tanka/", "Tanka", P["tanka"], '<span class="wplate">%s</span>' % ICONS["tanka"], "／".join(w["title"] for w in C.TANKA_WORKS) + " — %d作。" % len(C.TANKA_WORKS)),
       wcard("theater/", "Theater", P["theater"], sh("thumb-dejika.webp"),
             "デジカ — 京田辺、演劇ないん会 第16回本公演。脚本/演出：吾妻"),
       wcard("app/", "App", P["app"], sh("thumb-setsumei.webp") + sh("thumb-croqkey.webp"),
-            "接鳴 -電子焚火- ／ CroqKey"),
+            "／".join(a["title"] for a in C.APPS)),
     ]
     b = [crumbs(1, [(None,"Works")]), ph("Works", "作品", P["works"]),
          '  <div class="wgrid reveal">\n%s\n  </div>' % "\n".join(cards)]
@@ -477,7 +477,7 @@ def build():
     b = [crumbs(2, [("../","Works"), (None,"Poem")]), ph("Poem", "詩", P["poem"]),
          '  <div class="reveal">\n%s\n  </div>' % minis]
     made.append(("works/poem/index.html", page(2, "works/poem/", "Poem｜吾妻大夢 Station",
-      "吾妻大夢の詩。空力の考察、Case。", "\n".join(b), "works/",
+      "吾妻大夢の詩。" + "、".join(w["title"] for w in C.POEM_WORKS) + "。", "\n".join(b), "works/",
       ogtitle="Poem — %s" % P["poem"])))
 
     for w in C.POEM_WORKS:
@@ -487,6 +487,9 @@ def build():
         if w["asin"]:
             b.append('  <div class="linkrow reveal" style="justify-content:center;margin-top:2.2rem">'
                      '<a class="ext" href="%s" target="_blank" rel="noopener">Kindle版</a></div>' % (AMZ % w["asin"]))
+        elif w.get("url"):
+            b.append('  <div class="linkrow reveal" style="justify-content:center;margin-top:2.2rem">'
+                     '<a class="ext" href="%s" target="_blank" rel="noopener">note で読む</a></div>' % w["url"])
         made.append(("works/poem/%s/index.html" % w["slug"], page(3, "works/poem/%s/" % w["slug"],
           "%s｜Poem｜吾妻大夢 Station" % w["title"],
           "吾妻大夢の詩『%s』全文。" % w["title"], "\n".join(b), "works/",
@@ -551,7 +554,7 @@ def build():
             % (' style="margin-top:1.6rem"' if i else "", a["thumb"], esc(a["title"]),
                esc(a["title"]), esc(a["desc"]), a["url"]))
     made.append(("works/app/index.html", page(2, "works/app/", "App｜吾妻大夢 Station",
-      "接鳴 -電子焚火- と CroqKey。吾妻大夢のアプリケーション。", "\n".join(b), "works/",
+      "吾妻大夢のアプリケーション。" + "／".join(a["title"] for a in C.APPS) + "。", "\n".join(b), "works/",
       ogtitle="App — %s" % P["app"], back="../")))
 
     # ============================================================ Contact
