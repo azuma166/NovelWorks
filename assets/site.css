@@ -508,3 +508,8 @@ body {
 /* ================= Now: 最新作を並べる ================= */
 .now-head { display:flex; align-items:center; gap:0.75rem; margin-bottom:0.9rem; }
 .now-grid .set-card { gap:0.6rem; }
+
+/* ================= 韻文: 行は詰め、空行だけを連の切れ目に ================= */
+.verse-line.indent { text-indent:1em; }
+.verse-free { max-width:31em; margin:0 auto; }
+@media (max-width:640px) { .verse-free { max-width:none; } }

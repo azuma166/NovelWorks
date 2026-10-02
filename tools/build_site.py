@@ -208,6 +208,22 @@ def ph(en, jp, lead=None):
     return ('  <div class="ph reveal">\n    <span class="ph-en">%s</span>\n'
             '    <span class="ph-jp">%s</span>%s\n  </div>' % (esc(en), esc(jp), l))
 
+def verse_body(text):
+    """韻文。行はそのまま、空行だけを連の切れ目にする。"""
+    out, pending, seen = [], False, False
+    for raw in text.split("\n"):
+        st = raw.strip()
+        if not st:
+            if seen: pending = True
+            continue
+        if pending:
+            out.append('      <div class="verse-gap"></div>'); pending = False
+        ind = ' indent' if raw.startswith("　") else ''
+        out.append('      <p class="verse-line%s">%s</p>' % (ind, esc(st)))
+        seen = True
+    return ('  <div class="readpanel reveal">\n    <div class="verse-free">\n%s\n    </div>\n  </div>'
+            % "\n".join(out))
+
 def case_body(text):
     """[Case:xxx] を部、《題》を詩題、詩の途中の空行だけを連の切れ目として組む。"""
     out, open_verse, has_line, pending_gap = [], False, False, False
@@ -481,7 +497,9 @@ def build():
       ogtitle="Poem — %s" % P["poem"])))
 
     for w in C.POEM_WORKS:
-        body = case_body(w["text"]) if w["kind"] == "case" else paras(w["text"], "poem")
+        body = (case_body(w["text"])  if w["kind"] == "case"
+                else verse_body(w["text"]) if w["kind"] == "verse"
+                else paras(w["text"], "poem"))
         b = [crumbs(3, [("../../","Works"), ("../","Poem"), (None, w["title"])]),
              ph(w["title"], "Poem", P["poem"]), body]
         if w["asin"]:
